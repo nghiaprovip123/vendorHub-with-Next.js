@@ -32,7 +32,7 @@
 
 "use client"
 import { Button } from "@/components/ui/button"
-
+import Navbar from "./navbar"
 
  const X = () => {
   return (

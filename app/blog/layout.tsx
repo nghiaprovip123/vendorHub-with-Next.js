@@ -21,10 +21,8 @@ export default function RootLayout(
 Readonly<{children: React.ReactNode}>
 ) {
   return (
-        <html lang="en">
-      <body
-        className={`${dmSans.className} antialiased`}
-      >
+    <html lang="en">
+      <body className={`${dmSans.className} antialiased`}>
         {children}
       </body>
     </html>
