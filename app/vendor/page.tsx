@@ -182,7 +182,7 @@ export default function DataTableDemo() {
         const handleDelete = async () => {
           try {
             // Use item.id (MongoDB _id) which is the most reliable unique identifier.
-            const res = await fetch(`/api/categories/${item.id}`, { 
+            const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
               method: "DELETE",
             });
 
