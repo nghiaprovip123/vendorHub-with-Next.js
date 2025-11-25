@@ -150,6 +150,7 @@ export default function DataTableDemo() {
       header: ({ column }) => (
         <Button
           variant="noShadow"
+          className="ml-[-20] bg-transquarent border-0"
           size="sm"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -178,7 +179,7 @@ export default function DataTableDemo() {
       id: "actions",
       cell: ({ row }) => {
         const item = row.original;
-        
+        console.log("List of the data from Item Row", item);
         const handleDelete = async () => {
           try {
             // Use item.id (MongoDB _id) which is the most reliable unique identifier.
@@ -201,14 +202,13 @@ export default function DataTableDemo() {
 
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild className="bg-amber-50">
               <Button variant="noShadow" className="p-0">
                 <span className="sr-only">Open menu</span>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuContent className="bg-white" align="end">
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(item.cid)}
               >
