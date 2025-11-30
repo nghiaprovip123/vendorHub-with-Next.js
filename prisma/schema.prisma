@@ -19,8 +19,59 @@ model Category {
   cid   String  @unique
   title String  @default("Food")
   image String  
+  products Product[] @relation("categoryProducts")
 
   // One-to-many relation with Product
   @@map("categories") // optional: map to collection name
+}
+
+/// ===== Related minimal models (for relations) =====
+model User {
+  id       String    @id @map("_id") @default(auto()) @db.ObjectId
+  email    String    @unique
+  name     String?
+  products Product[] @relation("userProducts")
+  @@map("users")
+}
+
+model Vendor {
+  id       String    @id @map("_id") @default(auto()) @db.ObjectId
+  storeName String
+  products Product[] @relation("vendorProducts")
+  @@map("vendors")
+}
+
+
+/// ===== Product model for MongoDB =====
+model Product {
+  id             String         @id @map("_id") @default(auto()) @db.ObjectId
+  pid            String                                            // business product id (human-readable)
+  userId         String?        @db.ObjectId
+  user           User?          @relation("userProducts", fields: [userId], references: [id])
+  vendorId       String?        @db.ObjectId
+  vendor         Vendor?        @relation("vendorProducts", fields: [vendorId], references: [id])
+  cid     String?        @db.ObjectId
+  category       Category?      @relation("categoryProducts",fields: [cid], references: [id])
+  title          String
+  image          String?                                                        // primary image URL
+  description    String?                                                        // long text / HTML
+  price          Float
+  old_price      Float?
+  specifications Json?         // JSON object for flexible attributes: { color: "red", size: ["S","M"] }
+  type           String?       // e.g., "physical" | "digital" | "service"
+  stock_count    Int           @default(0)
+  life           String?       // shelf life / warranty text
+  mfd            DateTime?     // manufacture date
+  in_stock       Boolean       @default(true)
+  featured       Boolean       @default(false)
+  digital        Boolean       @default(false)
+  sku            String?
+  date           DateTime      @default(now()) 
+  updated        DateTime      @updatedAt
+
+  @@map("products")
+  @@index([pid], name: "pid_idx")
+  @@index([sku], name: "sku_idx")
+  @@index([title], name: "title_idx")
 }
 
