@@ -6,8 +6,8 @@ export async function GET(req: Request) {
     try {
         const products = await prisma.product.findMany()
         return NextResponse.json(
-            {message: "fetch successfully products", products: products},
-            {status: 201}
+            {message: "fetch successfully products", productList: products},
+            {status: 200}
         )
     }
     catch (err:any) {
@@ -17,19 +17,7 @@ export async function GET(req: Request) {
         )
     }
 }
-// export async function POST(req:Request) {
-//     const newProduct = await prisma.product.create({
-//         data: {
-//             pid: "p001",
-//             title: "Test Product",
-//             price: 99,        
-//         }
-//     })
-//     return NextResponse.json(
-//             { message: "product is create successfully", product: newProduct },
-//             { status: 500 }
-//     )
-// }
+
 
 
 // CREATE PRODUCT ---> NEED TO DOCUMENT ON CONFLUENCE

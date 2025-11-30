@@ -22,7 +22,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <NavBar />
       <body className={`${dmSans.className} antialiased font-size: 1rem`}>
         {children}
       </body>
