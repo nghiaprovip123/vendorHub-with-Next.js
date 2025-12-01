@@ -31,6 +31,6 @@ export async function POST(req:Request) {
     })
     return NextResponse.json(
             { message: "product is create successfully", product: newProduct },
-            { status: 500 }
+            { status: 201 }
     )
 }
