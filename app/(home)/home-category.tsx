@@ -18,7 +18,7 @@ import {
     return (
       <div className="w-full flex flex-col items-center mt-10">
         <h1 className="font-bold text-5xl mb-6">
-          Feature Categories ({categories.length})
+          Feature categories ({categories.length})
         </h1>
   
         {/* Centered Carousel */}

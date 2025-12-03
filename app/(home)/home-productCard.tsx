@@ -16,12 +16,15 @@ export default async function ProductCard() {
     const productCards = productList; 
 
     return (
-        // Wrapper: Keeping layout classes, but adding a contrasting background (optional)
+		<div className="w-full flex flex-col items-center mt-10">
+		<h1 className="font-bold text-5xl mb-6">
+          Popular products ({productCards.length})
+        </h1>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto p-4">
             {productCards.map((p:any) => (
                 <div key={p.pid} className="mx-auto w-full">
                     <div className="
-                        bg-background border-4 border-black rounded-none 
+                        bg-white border-4 border-black rounded-none 
                         shadow-[8px_8px_0_#000000] transition-shadow duration-300
                         hover:shadow-[12px_12px_0_#000000]
                     ">
@@ -77,5 +80,7 @@ export default async function ProductCard() {
                 </div>
             ))}
         </div>
+		</ div>
+        
     );
 }
