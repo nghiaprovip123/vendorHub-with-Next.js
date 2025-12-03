@@ -259,6 +259,7 @@ export default function DataTableDemo() {
 
   return (
     <div className="w-full px-8">
+      <h1 className="mt-4 font-extrabold text-4xl">CATEGORY ({data.length})</h1>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter title..."

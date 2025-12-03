@@ -10,6 +10,7 @@ export async function GET(req: Request) {
             {status: 200}
         )
     }
+
     catch (err:any) {
         return NextResponse.json (
             {error: "fail to fetch products"},
@@ -18,7 +19,7 @@ export async function GET(req: Request) {
     }
 }
 
-
+// CREATE PRODUCT ---> NEED TO DOCUMENT ON CONFLUENCE
 export async function POST(req: Request) {
     try {
         const body = await req.json();
@@ -45,7 +46,9 @@ export async function POST(req: Request) {
             { message: "Product created", product: newProduct },
             { status: 201 }
         );
-    } catch (error) {
+    } 
+    
+    catch (error) {
         console.error("Create product error:", error);
         return NextResponse.json(
             { error: "Fail to create a new product." },
