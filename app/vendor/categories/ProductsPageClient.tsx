@@ -46,18 +46,15 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-export type Product = {
-  id: string
-  pid: string
-  title: string
-  price: number
-  image: string
-  cid: string
-}
-
+export type Category = {
+  id: string; // MongoDB _id
+  cid: string; // Unique Category ID field
+  title: string;
+  image: string;
+};
 
 export default function DataTableDemo() {
-  const [data, setData] = useState<Product[]>([]); // data for running the component
+  const [data, setData] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -68,36 +65,32 @@ export default function DataTableDemo() {
   // ✅ FIX: Separate state for Create and View dialogs
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
-  const [id, setId] = useState("")
-  const [pid, setPid] = useState("")
-  const [title, setTitle] = useState("")
-  const [price, setPrice] = useState("")
-  const [image, setImage] = useState("")
-  const [cid, setCid] = useState("")
+
+  const [title, setTitle] = useState("");
+  const [cid, setCid] = useState("");
+  const [image, setImage] = useState("");
   
   // ✅ FIX: Separate state for viewing category
-  const [viewProduct, setviewProduct] = useState<Product | null>(null);
+  const [viewCategory, setViewCategory] = useState<Category | null>(null);
 
   // Fetch categories
   useEffect(() => {
     const ac = new AbortController();
-    async function fetchProducts() {
+    async function fetchCategories() {
       try {
         setLoading(true);
-        const res = await fetch("/api/products", { signal: ac.signal });
+        const res = await fetch("/api/categories", { signal: ac.signal });
         if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
         const json = await res.json();
-        const payload = Array.isArray(json)
-                        ? json
-                        : json.productList || json.products || [];
-      setData(payload);
+        const payload = Array.isArray(json) ? json : json?.categories ?? [];
+        setData(payload);
       } catch (err: any) {
         if (err.name !== "AbortError") setError(err.message || "Unknown error");
       } finally {
         setLoading(false);
       }
     }
-    fetchProducts();
+    fetchCategories();
     return () => ac.abort();
   }, []);
 
@@ -105,25 +98,22 @@ export default function DataTableDemo() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/products", {
+      const res = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pid, cid, image, title, price }),
+        body: JSON.stringify({ title, cid, image }),
       });
       if (!res.ok) throw new Error("Failed to create category");
 
       const responseData = await res.json();
-      const newProduct = responseData.product || responseData; 
+      const newCategory = responseData.category || responseData; 
       
-      setData((prev) => [...prev, newProduct]);
+      setData((prev) => [...prev, newCategory]);
       
       // Reset form state and close CREATE dialog
       setTitle("");
       setCid("");
       setImage("");
-      setPid("");
-      setId("");
-      setPrice("");
       setIsCreateDialogOpen(false); 
 
     } catch (err: any) {
@@ -132,7 +122,7 @@ export default function DataTableDemo() {
   };
 
   // ✅ FIX: Memoized columns with proper dependencies
-  const columns: ColumnDef<Product>[] = useMemo(() => [
+  const columns: ColumnDef<Category>[] = useMemo(() => [
     {
       id: "select",
       header: ({ table }) => (
@@ -158,7 +148,7 @@ export default function DataTableDemo() {
       cell: ({ row }) => <div className="text-xs">{row.getValue("id")}</div>,
     },
     {
-      accessorKey: "pid",
+      accessorKey: "cid",
       header: ({ column }) => (
         <Button
           variant="noShadow"
@@ -166,24 +156,19 @@ export default function DataTableDemo() {
           size="sm"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Product ID <ArrowUpDown />
+          Category ID <ArrowUpDown />
         </Button>
       ),
-      cell: ({ row }) => <div className="lowercase">{row.getValue("pid")}</div>,
+      cell: ({ row }) => <div className="lowercase">{row.getValue("cid")}</div>,
     },
     {
       accessorKey: "title",
-      header: "Product Title",
+      header: "Category Title",
       cell: ({ row }) => <div className="capitalize">{row.getValue("title")}</div>,
     },
     {
-      accessorKey: "price",
-      header: "Product Price",
-      cell: ({ row }) => <div className="capitalize">{row.getValue("price")}</div>,
-    },
-    {
       accessorKey: "image",
-      header: "Product Image",
+      header: "Category Image",
       cell: ({ row }) => (
         <img
           src={row.getValue("image")}
@@ -198,28 +183,28 @@ export default function DataTableDemo() {
         const item = row.original;
         
         // Delete Category
-        // const handleDelete = async () => {
-        //   try {
-        //     const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
-        //       method: "DELETE",
-        //     });
+        const handleDelete = async () => {
+          try {
+            const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
+              method: "DELETE",
+            });
 
-        //     if (!res.ok) throw new Error("Failed to delete category");
+            if (!res.ok) throw new Error("Failed to delete category");
             
-        //     setData(prevData => prevData.filter(cat => cat.id !== item.id));
+            setData(prevData => prevData.filter(cat => cat.id !== item.id));
             
-        //     console.log(`Category ${item.cid} deleted successfully.`); 
+            console.log(`Category ${item.cid} deleted successfully.`); 
 
-        //   } catch (err: any) {
-        //     console.error("Error during deletion:", err.message);
-        //   }
-        // };
+          } catch (err: any) {
+            console.error("Error during deletion:", err.message);
+          }
+        };
         
         // ✅ FIX: View Category - simplified
-        // const handleViewCategory = () => {
-        //   setViewProduct(item);
-        //   setIsViewDialogOpen(true);
-        // };
+        const handleViewCategory = () => {
+          setViewCategory(item);
+          setIsViewDialogOpen(true);
+        };
         
         return (
           <DropdownMenu>
@@ -231,16 +216,17 @@ export default function DataTableDemo() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="font-semibold bg-white" align="end">
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(item.pid)}
+                onClick={() => navigator.clipboard.writeText(item.cid)}
               >
                 Copy Category ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
-              <DropdownMenuItem className="cursor-pointer" >
+              <DropdownMenuItem className="cursor-pointer" onClick={handleViewCategory}>
                 View
               </DropdownMenuItem>
               <DropdownMenuItem 
+                onClick={handleDelete}
                 className="cursor-pointer text-red-500 focus:text-red-500"
               >
                 Delete
@@ -273,7 +259,7 @@ export default function DataTableDemo() {
 
   return (
     <div className="w-full px-8">
-      <h1 className="mt-4 font-extrabold text-4xl">PRODUCTs ({data.length})</h1>
+      <h1 className="mt-4 font-extrabold text-4xl">CATEGORY ({data.length})</h1>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter title..."
@@ -309,7 +295,7 @@ export default function DataTableDemo() {
         </DropdownMenu>
 
         {/* ✅ FIX: CREATE Dialog with separate state */}
-        {/* <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="text-white bg-black ml-8 cursor-pointer">
               Create <VscAdd />
@@ -362,11 +348,11 @@ export default function DataTableDemo() {
               </DialogFooter>
             </form>
           </DialogContent>
-        </Dialog> */}
+        </Dialog>
       </div>
 
       {/* ✅ FIX: VIEW Dialog outside the table, controlled by separate state */}
-      {/* <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
@@ -401,7 +387,7 @@ export default function DataTableDemo() {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
 
       {loading ? (
         <div className="h-24 flex items-center justify-center">Loading...</div>
