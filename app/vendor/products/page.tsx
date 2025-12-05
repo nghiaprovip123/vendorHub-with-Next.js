@@ -201,8 +201,8 @@ export default function DataTableDemo() {
         const handleDelete = async () => 
         {
           try {
-            const res = await fetch('/api/products/{$item.id}', {
-              method: "DELETE"
+            const res = await fetch(`http://localhost:3000/api/products/${item.id}`, { 
+              method: "DELETE",
             });
             if (!res.ok) {
               setError("fail to fetch the APIs")
@@ -241,6 +241,7 @@ export default function DataTableDemo() {
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="cursor-pointer text-red-500 focus:text-red-500"
+              onClick={handleDelete}
               >
                 Delete
               </DropdownMenuItem>
