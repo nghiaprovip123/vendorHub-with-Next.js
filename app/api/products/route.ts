@@ -20,39 +20,40 @@ export async function GET(req: Request) {
 }
 
 // CREATE PRODUCT ---> NEED TO DOCUMENT ON CONFLUENCE
-export async function POST(req: Request) {
+export async function POST(req:Request) {
     try {
         const body = await req.json();
-        const { pid, title, cid, image, price } = body;
-
-        if (!pid || !title) {
+        const {
+            pid,
+            cid,
+            image,
+            title,
+            price,
+        } = body
+        if (!pid || !cid || !title) {
             return NextResponse.json(
-                { error: "Product ID and Title are required" },
+                { error: "Product ID, Title, Category are missing out!" },
                 { status: 400 }
-            );
+            )
         }
-
-        const newProduct = await prisma.product.create({
-            data: {
-                pid,
-                title,
+        const newProduct = await prisma.product.create(
+            {data: {
                 cid,
+                pid,
                 image,
-                price,
+                title,
+                price: Number(price),}
             },
-        });
-
+        )
         return NextResponse.json(
-            { message: "Product created", product: newProduct },
-            { status: 201 }
-        );
-    } 
-    
-    catch (error) {
-        console.error("Create product error:", error);
-        return NextResponse.json(
-            { error: "Fail to create a new product." },
-            { status: 500 }
-        );
+            {message: "Product is create successfully", product: newProduct},
+            {status: 201}
+        )
+    }
+    catch (err: any) {
+        return NextResponse.json (
+            {error: "Unknown Error"},
+            {status: 500}
+        )
     }
 }

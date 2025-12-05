@@ -309,7 +309,7 @@ export default function DataTableDemo() {
         </DropdownMenu>
 
         {/* ✅ FIX: CREATE Dialog with separate state */}
-        {/* <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="text-white bg-black ml-8 cursor-pointer">
               Create <VscAdd />
@@ -319,18 +319,18 @@ export default function DataTableDemo() {
             <form onSubmit={handleSubmit}>
               <DialogHeader>
                 <DialogTitle>
-                  <h1 className="text-2xl mb-4"> Create a new category </h1> 
+                  <h1 className="text-2xl mb-4"> Create a new Product </h1> 
                 </DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 mb-4 font-semibold">
                 <div className="grid gap-1">
-                  <Label className="font-semibold" htmlFor="cid">Category ID</Label>
+                  <Label className="font-semibold" htmlFor="cid">Product ID</Label>
                   <Input
                     className="bg-white"
-                    id="cid"
-                    value={cid}
-                    onChange={(e) => setCid(e.target.value)}
-                    placeholder="category id"
+                    id="pid"
+                    value={pid}
+                    onChange={(e) => setPid(e.target.value)}
+                    placeholder="product id"
                   />
                 </div>
                 <div className="grid gap-1">
@@ -340,18 +340,38 @@ export default function DataTableDemo() {
                     id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="category title"
+                    placeholder="product title"
                   />
                 </div>
                 <div className="grid gap-1">
-                  <Label className="font-semibold" htmlFor="image">Category Image</Label>
+                  <Label className="font-semibold" htmlFor="image">Product Image</Label>
                   <Input
                     className="bg-white"
                     id="image"
                     value={image}
                     onChange={(e) => setImage(e.target.value)}
-                    placeholder="category url"
+                    placeholder="product image url"
                   />
+                </div>
+                <div className="grid gap-1">
+                  <Label className="font-semibold" htmlFor="image">Product Price</Label>
+                  <Input
+                    className="bg-white"
+                    id="image"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="product price"
+                  />
+                </div>
+                <div className="grid gap-1">
+                    <Label className="font-semibold" htmlFor="image">Category of Product</Label>
+                    <Input
+                      className="bg-white"
+                      id="category"
+                      value={cid}
+                      onChange={(e) => setCid(e.target.value)}
+                      placeholder="product price"
+                    />
                 </div>
               </div>
               <DialogFooter>
@@ -362,7 +382,7 @@ export default function DataTableDemo() {
               </DialogFooter>
             </form>
           </DialogContent>
-        </Dialog> */}
+        </Dialog>
       </div>
 
       {/* ✅ FIX: VIEW Dialog outside the table, controlled by separate state */}
