@@ -197,23 +197,22 @@ export default function DataTableDemo() {
       cell: ({ row }) => {
         const item = row.original;
         
-        // Delete Category
-        // const handleDelete = async () => {
-        //   try {
-        //     const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
-        //       method: "DELETE",
-        //     });
-
-        //     if (!res.ok) throw new Error("Failed to delete category");
-            
-        //     setData(prevData => prevData.filter(cat => cat.id !== item.id));
-            
-        //     console.log(`Category ${item.cid} deleted successfully.`); 
-
-        //   } catch (err: any) {
-        //     console.error("Error during deletion:", err.message);
-        //   }
-        // };
+        // DELETE EVENT HANDLING
+        const handleDelete = async () => 
+        {
+          try {
+            const res = await fetch('/api/products/{$item.id}', {
+              method: "DELETE"
+            });
+            if (!res.ok) {
+              setError("fail to fetch the APIs")
+            }
+            setData(prevData => prevData.filter(prod =>  prod.id !== item.id))
+          }
+          catch(err:any) {
+            setError("unknown error")
+          }
+        }
         
         // ✅ FIX: View Category - simplified
         // const handleViewCategory = () => {
