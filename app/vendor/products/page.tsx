@@ -65,7 +65,7 @@ export default function DataTableDemo() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   
-  // ✅ FIX: Separate state for Create and View dialogs
+  // FIX: Separate state for Create and View dialogs
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [id, setId] = useState("")
@@ -75,7 +75,7 @@ export default function DataTableDemo() {
   const [image, setImage] = useState("")
   const [cid, setCid] = useState("")
   
-  // ✅ FIX: Separate state for viewing category
+  // FIX: Separate state for viewing category
   const [viewProduct, setviewProduct] = useState<Product | null>(null);
 
   // Fetch categories
@@ -131,7 +131,7 @@ export default function DataTableDemo() {
     }
   };
 
-  // ✅ FIX: Memoized columns with proper dependencies
+  // FIX: Memoized columns with proper dependencies
   const columns: ColumnDef<Product>[] = useMemo(() => [
     {
       id: "select",
@@ -197,29 +197,29 @@ export default function DataTableDemo() {
       cell: ({ row }) => {
         const item = row.original;
         
-        // Delete Category
-        // const handleDelete = async () => {
-        //   try {
-        //     const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
-        //       method: "DELETE",
-        //     });
-
-        //     if (!res.ok) throw new Error("Failed to delete category");
-            
-        //     setData(prevData => prevData.filter(cat => cat.id !== item.id));
-            
-        //     console.log(`Category ${item.cid} deleted successfully.`); 
-
-        //   } catch (err: any) {
-        //     console.error("Error during deletion:", err.message);
-        //   }
-        // };
+        // DELETE EVENT HANDLING
+        const handleDelete = async () => 
+        {
+          try {
+            const res = await fetch(`http://localhost:3000/api/products/${item.id}`, { 
+              method: "DELETE",
+            });
+            if (!res.ok) {
+              setError("fail to fetch the APIs")
+            }
+            setData(prevData => prevData.filter(prod =>  prod.id !== item.id))
+          }
+          catch(err:any) {
+            setError("unknown error")
+          }
+        }
         
-        // ✅ FIX: View Category - simplified
-        // const handleViewCategory = () => {
-        //   setViewProduct(item);
-        //   setIsViewDialogOpen(true);
-        // };
+        // VIEW PRODUCT DETAILS
+        const viewCertainProduct = () =>
+        {
+          setviewProduct(item)
+          setIsViewDialogOpen(true)
+        }
         
         return (
           <DropdownMenu>
@@ -237,11 +237,12 @@ export default function DataTableDemo() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
-              <DropdownMenuItem className="cursor-pointer" >
+              <DropdownMenuItem className="cursor-pointer" onClick={viewCertainProduct}>
                 View
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="cursor-pointer text-red-500 focus:text-red-500"
+              onClick={handleDelete}
               >
                 Delete
               </DropdownMenuItem>
@@ -385,30 +386,32 @@ export default function DataTableDemo() {
         </Dialog>
       </div>
 
-      {/* ✅ FIX: VIEW Dialog outside the table, controlled by separate state */}
-      {/* <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+     
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>
-              <h1 className="text-2xl mb-4">Category Details</h1>
+              <h1 className="text-2xl mb-4">Product Details</h1>
             </DialogTitle>
           </DialogHeader>
 
-          {viewCategory && (
+          {viewProduct && (
             <div className="grid gap-4 mb-4 font-semibold">
               <div className="grid gap-1">
-                <Label className="font-bold">Category ID: {viewCategory.cid}</Label>
-              </div>
-
-              <div className="grid gap-1">
-                <Label className="font-bold">Title: {viewCategory.title}</Label>
+                <Label className="font-bold">Product ID: {viewProduct.pid}</Label>
               </div>
               <div className="grid gap-1">
-                <Label className="font-bold">Category Image</Label>
-                <p className="text-sm break-all">{viewCategory.image}</p>
+                <Label className="font-bold">Category: {viewProduct.cid}</Label>
+              </div>
+              <div className="grid gap-1">
+                <Label className="font-bold">Title: {viewProduct.title}</Label>
+              </div>
+              <div className="grid gap-1">
+                <Label className="font-bold">Image</Label>
+                <p className="text-sm break-all">{viewProduct.image}</p>
                 <img 
-                  src={viewCategory.image} 
-                  alt={viewCategory.title}
+                  src={viewProduct.image} 
+                  alt={viewProduct.title}
                   className="w-32 h-32 object-cover rounded mt-2"
                 />
               </div>
@@ -421,7 +424,7 @@ export default function DataTableDemo() {
             </DialogClose>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
 
       {loading ? (
         <div className="h-24 flex items-center justify-center">Loading...</div>
