@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import "./globals.css";
-import NavBar from "./navbar"
-import { Nav } from "react-day-picker";
+import "@/app/globals.css";
+import NavBar from "../../navbar";
 
-const dmSans = DM_Sans(
-  {
-    subsets: ['latin']
-  }
-);
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "vendorHub",
@@ -17,13 +14,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={`${dmSans.className} antialiased font-size: 1rem`}>
-        <NavBar />
         {children}
       </body>
     </html>
