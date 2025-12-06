@@ -28,10 +28,11 @@ export default async function ProductCard() {
                         shadow-[8px_8px_0_#000000] transition-shadow duration-300
                         hover:shadow-[12px_12px_0_#000000]
                     ">
-                        <a href="#">
+                        <a href={`/product-details/${p.id}`}>
                             <img 
                                 className="rounded-none p-4 object-cover h-64 w-full border-b-4 border-black" 
                                 src={p.image} 
+                                
                                 alt="product image"
                             />
                         </a>
