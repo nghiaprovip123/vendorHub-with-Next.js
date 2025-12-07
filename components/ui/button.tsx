@@ -1,4 +1,5 @@
 import { Slot } from "@radix-ui/react-slot"
+import { Stack } from "@mui/material"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import * as React from "react"
@@ -37,19 +38,35 @@ function Button({
   variant,
   size,
   asChild = false,
+  label,
+  startIcon,
+  endIcon,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
+    asChild?: boolean,
+    label?: string;
+    startIcon?: React.ReactNode,
+    endIcon?: React.ReactNode,
   }) {
   const Comp = asChild ? Slot : "button"
 
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(
+        "inline-flex items-center gap-2",
+        buttonVariants({ variant, size, className })
+      )}
       {...props}
-    />
+    >
+      <Stack direction='row' alignItems='center' gap={1}>
+        {startIcon && <span className="inline-flex">{startIcon}</span>}
+        {label || children}
+        {endIcon && <span className="inline-flex">{endIcon}</span>}
+      </Stack>
+    </Comp>
   )
 }
 

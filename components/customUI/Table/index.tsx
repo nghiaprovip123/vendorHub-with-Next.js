@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useState } from "react";
-
+import { VscAdd } from "react-icons/vsc";
 import { 
   ColumnDef, 
   ColumnFiltersState, 
@@ -14,23 +14,20 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
-import {
-  Table as UITable,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { 
-  DropdownMenu, 
-  DropdownMenuCheckboxItem, 
-  DropdownMenuContent, 
+  Table as UITable,
+  TableCell, 
+  TableRow,
+  TableHeader,
+  TableBody,
+  Input,
+  DropdownMenu,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { VscAdd } from "react-icons/vsc";
+  Button,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  TableHead,
+} from "@/components/ui";
 
 interface DataTableProps<TData, TValue> {
   title?: string,
@@ -119,9 +116,12 @@ const Table = <TData, TValue>({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="noShadow" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
+            <Button 
+              variant="noShadow" 
+              className="ml-auto"
+              label="Columns"
+              endIcon={<ChevronDown />}
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table
@@ -145,9 +145,9 @@ const Table = <TData, TValue>({
           <Button 
             className="text-white bg-black ml-8 cursor-pointer" 
             onClick={handleButtonAction}
-          >
-            {buttonText} <VscAdd />
-          </Button>
+            label={buttonText}
+            endIcon={<VscAdd />}
+          />
         )}
       </div>
 
@@ -176,7 +176,7 @@ const Table = <TData, TValue>({
               : emptyView}
           </TableBody>
         </UITable>
-        
+
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -186,19 +186,17 @@ const Table = <TData, TValue>({
             <Button
               variant="noShadow"
               size="sm"
+              label="Previous"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </Button>
+            />
             <Button
               variant="noShadow"
               size="sm"
+              label="Next"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-            >
-              Next
-            </Button>
+            />
           </div>
         </div>
       </div>
