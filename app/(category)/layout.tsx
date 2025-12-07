@@ -4,8 +4,8 @@ type Props = {
  children: React.ReactNode;
 };
 
-const RootLayout = ({ children }: Props) => {
+const CategoryLayout = ({ children }: Props) => {
   return children;
 }
 
-export default RootLayout;
+export default CategoryLayout;

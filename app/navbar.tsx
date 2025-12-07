@@ -1,119 +1,81 @@
-"use client"
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { Button } from "@/components/ui";
 import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Stack } from "@mui/material";
 
-const poppins = Poppins(
-    {
-        subsets:['latin'],
-        weight: ['700']
-    }
-)
-
-interface NavBarItemProps 
-{
-    href: string;
-    children: React.ReactNode;
-    isActive?: boolean;
+interface NavBarItemProps {
+  href: string;
+  title: string;
+  isActive?: boolean;
 }
 
-const NavItem = (navBarItemProps: NavBarItemProps) =>
-    {
-        const href = navBarItemProps.href;
-        const children = navBarItemProps.children;
-        const isActive = navBarItemProps.isActive; 
-
-        return (
-            <Button 
-                asChild
-                // variant="outline" 
-                className={cn(
-                    "bg-white hover:bg-transparent rounded-full hover:border-primary border-white text-lg", 
-                    isActive && "bg-black text-white hover:bg-black hover:text-white text-lg"
-                )}>
-                <Link href={href}>
-                    {children}
-                </Link>
-            </Button>
-        )
-    }
-const navbarItems = 
-[
-    {href: '/', children: 'Home'},
-    {href: '/about', children: 'About'},
-    {href: '/features', children: 'Features'},
-    {href: '/pricing', children: 'Pricing'},
-    {href: '/contact', children: 'Contact'},
-    {href:'/login', children: 'Login'},
-    {href:'/selling', children: 'Start selling'},
+const navbarItems = [
+  { path: '/', title: 'Home' },
+  { path: '/about', title: 'About' },
+  { path: '/features', title: 'Features' },
+  { path: '/pricing', title: 'Pricing' },
+  { path: '/contact', title: 'Contact' },
 ]
 
-const CcItems = (ccprops: NavBarItemProps) =>
-{
-    const href = ccprops.href;
-    const children = ccprops.children
-    const isLogin = href === "/login";
-    return (
-    <Button
-        asChild
-        variant = "noShadow"
-        className={cn(
-            "text-white bg-black rounded-r-none rounded-l-none h-20 pl-12 pr-12 border border-t-0 border-r-0 text-lg shadow-none font-bold",
-            isLogin && "bg-white text-black hover:bg-white hover:text-black text-lg font-bold"
-        )}
-        >
-        <Link href={href}>
-            {children}
-        </Link>
+const NavItem = (props: NavBarItemProps) => {
+  const { href, title, isActive } = props;
+
+  return (
+    <Button 
+      asChild
+      variant='reverse'
+      className={cn(
+        "bg-white rounded-full hover:border-primary border-white", 
+        isActive && "bg-black text-white hover:bg-black hover:text-white"
+      )}
+      style={{
+        padding: '0px 12px',
+        maxHeight: '32px'
+      }}
+    >
+      <Link href={href}>
+        {title}
+      </Link>
     </Button>
-    )
+  )
 }
 
+export const Navbar = () => {
+  const pathName = usePathname();
 
-export const Navbar = 
-() => 
-    {
-        const pathName = usePathname();
-        const filterAuthItems = ["/login", "/selling"];
-        return (
-            <nav className ="h-20 flex border-b justify-between font-medium font-medium bg-white border-b-2">   
-                <Link href ="/" className = "pl-6 flex items-center">
-                    <span> 
-                        <span className={cn("text-5xl font-semibold", poppins.className)}>
-                            vendorHub
-                        </span>
-                    </span>
-                </Link>
-                <div className="gap-0 lg:flex">
-                    <div className ="items-center gap-4 lg:flex pr-6 cursor-point test-base">
-                            {navbarItems.filter(item => !filterAuthItems.includes(item.href)).map((item) => 
-                                (
-                                    <NavItem 
-                                        key={item.href}
-                                        href={item.href}
-                                        isActive={pathName === item.href}>
-                                        {item.children}
-                                    </NavItem>
-                                ))
-                            }
-                        </div> 
-                        <div className = "items-center lg:flex border-1 border-b-2">
-                            {navbarItems.filter(item => item.href === "/login" || item.href === "/selling").map((item) =>
-                                (
-                                    <CcItems
-                                        key={item.href}
-                                        href={item.href}
-                                    >
-                                            {item.children}
-                                    </CcItems>
-                                )
-                            )}
-                        </div>
-                </div>
-            </nav>
-        )
-    }
+  return (
+    <div className="flex items-center justify-between p-2 bg-white">   
+      <Link href="/" className="font-bold text-2xl">
+        vendorHub
+      </Link>
+
+      <div className ="items-center gap-1 flex cursor-point">
+        {navbarItems.map((item, index) => (
+          <NavItem
+            key={index}
+            href={item.path}
+            title={item.title}
+            isActive={pathName === item.path}
+          />
+        ))}
+      </div> 
+      <div className="flex items-center gap-2">
+        <Button
+          label="Login"
+          className="bg-white text-black text-lg font-bold"
+          variant='noShadow'
+        />
+        <Button
+          label="Start Selling"
+          variant='noShadow'
+          className="text-white bg-black text-lg shadow-none font-bold"
+        />
+      </div>
+    </div>
+  )
+}
 
 export default Navbar;

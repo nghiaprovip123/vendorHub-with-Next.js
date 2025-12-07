@@ -6,15 +6,16 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Category } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
 import CategoriesDetail from "../CategoriesDetail";
+import { 
+  Button,
+  DropdownMenu, 
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  ImageCard,
+} from "@/components/ui";
 
 export const allColumns = (
   dialog: any,
@@ -50,10 +51,10 @@ export const allColumns = (
         variant="noShadow"
         className="ml-[-20] bg-transquarent border-0 font-semibold"
         size="sm"
+        label="Category ID"
+        endIcon={<ArrowUpDown />}
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Category ID <ArrowUpDown />
-      </Button>
+      />
     ),
     cell: ({ row }) => <div className="lowercase">{row.getValue("cid")}</div>,
   },
@@ -66,9 +67,8 @@ export const allColumns = (
     accessorKey: "image",
     header: "Category Image",
     cell: ({ row }) => (
-      <img
-        src={row.getValue("image")}
-        alt={String(row.getValue("title"))}
+      <ImageCard  
+        imageUrl={row.getValue("image")}
         className="w-10 h-10 object-cover rounded"
       />
     ),
@@ -77,24 +77,6 @@ export const allColumns = (
     id: "actions",
     cell: ({ row }) => {
       const item = row.original;
-      
-      // Delete Category
-      // const handleDelete = async () => {
-      //   try {
-      //     const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
-      //       method: "DELETE",
-      //     });
-
-      //     if (!res.ok) throw new Error("Failed to delete category");
-          
-      //     setData(prevData => prevData.filter(cat => cat.id !== item.id));
-          
-      //     console.log(`Category ${item.cid} deleted successfully.`); 
-
-      //   } catch (err: any) {
-      //     console.error("Error during deletion:", err.message);
-      //   }
-      // };
       
       const handleViewDetail = () => {
         dialog.open({

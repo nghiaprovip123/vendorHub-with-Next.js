@@ -144,6 +144,7 @@ const Table = <TData, TValue>({
         {buttonText && (
           <Button 
             className="text-white bg-black ml-8 cursor-pointer" 
+            variant='noShadow'
             onClick={handleButtonAction}
             label={buttonText}
             endIcon={<VscAdd />}
