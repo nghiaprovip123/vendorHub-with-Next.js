@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,31 +15,30 @@ interface FetchedProduct {
   description: string;
 }
 
-export default function ProductDetailsPage({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
-}) {
-  const [productId, setProductId] = React.useState<string | null>(null);
+interface ProductDetailsPageProps {
+  params: { id: string };
+}
 
-  React.useEffect(() => {
-    params.then(p => setProductId(p.id));
-  }, [params]);
+export default function ProductDetailsPage({ params }: ProductDetailsPageProps) {
   const [product, setProduct] = useState<FetchedProduct | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!productId) {
-      return;
-    }
-
     async function getProductDetails() {
       try {
         setLoading(true);
         setError("");
 
-        const res = await fetch(`/api/products/${productId}`);
+        const { id } = await params;
+
+        if (!id) {
+          setError("No product ID provided");
+          setLoading(false);
+          return;
+        }
+
+        const res = await fetch(`/api/products/${id}`);
         const json = await res.json();
 
         if (!res.ok) {
@@ -58,7 +56,7 @@ export default function ProductDetailsPage({
     }
 
     getProductDetails();
-  }, [productId]);
+  }, [params]);
 
   // ---- Loading
   if (loading) {
