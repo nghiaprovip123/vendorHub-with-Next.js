@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Carousel,
     CarouselContent,
@@ -8,23 +9,24 @@ import {
   
   import ImageCard from "@/components/ui/image-card"
   
-  async function getCategories() {
-    const res = await fetch("http://localhost:3000/api/categories")
-    return res.json()
-  }
+  // async function getCategories() {
+  //   const res = await fetch("http://localhost:3000/api/categories")
+  //   return res.json()
+  // }
   export default async function CategoriesPage() {
-    const { categories } = await getCategories()
+    // const { categories } = await getCategories()
+    const abcd = [] as any;
   
     return (
       <div className="w-full flex flex-col items-center mt-10">
         <h1 className="font-bold text-5xl mb-6">
-          Feature categories ({categories.length})
+          Feature categories ({abcd.length})
         </h1>
   
         {/* Centered Carousel */}
         <Carousel className="w-full max-w-5xl relative">
           <CarouselContent className="flex items-center">
-            {categories.map((c: any) => (
+            {abcd.map((c: any) => (
               <CarouselItem
                 key={c.cid}
                 className="lg:basis-1/6 flex justify-center"

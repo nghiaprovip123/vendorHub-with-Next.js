@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/DataTableDemo.tsx
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
@@ -79,57 +80,57 @@ export default function DataTableDemo() {
   const [viewProduct, setviewProduct] = useState<Product | null>(null);
 
   // Fetch categories
-  useEffect(() => {
-    const ac = new AbortController();
-    async function fetchProducts() {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/products", { signal: ac.signal });
-        if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
-        const json = await res.json();
-        const payload = Array.isArray(json)
-                        ? json
-                        : json.productList || json.products || [];
-      setData(payload);
-      } catch (err: any) {
-        if (err.name !== "AbortError") setError(err.message || "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-    return () => ac.abort();
-  }, []);
+  // useEffect(() => {
+  //   const ac = new AbortController();
+  //   async function fetchProducts() {
+  //     try {
+  //       setLoading(true);
+  //       const res = await fetch("/api/products", { signal: ac.signal });
+  //       if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
+  //       const json = await res.json();
+  //       const payload = Array.isArray(json)
+  //                       ? json
+  //                       : json.productList || json.products || [];
+  //     setData(payload);
+  //     } catch (err: any) {
+  //       if (err.name !== "AbortError") setError(err.message || "Unknown error");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchProducts();
+  //   return () => ac.abort();
+  // }, []);
 
   // Submit form (Create)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pid, cid, image, title, price }),
-      });
-      if (!res.ok) throw new Error("Failed to create category");
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await fetch("/api/products", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ pid, cid, image, title, price }),
+  //     });
+  //     if (!res.ok) throw new Error("Failed to create category");
 
-      const responseData = await res.json();
-      const newProduct = responseData.product || responseData; 
+  //     const responseData = await res.json();
+  //     const newProduct = responseData.product || responseData; 
       
-      setData((prev) => [...prev, newProduct]);
+  //     setData((prev) => [...prev, newProduct]);
       
-      // Reset form state and close CREATE dialog
-      setTitle("");
-      setCid("");
-      setImage("");
-      setPid("");
-      setId("");
-      setPrice("");
-      setIsCreateDialogOpen(false); 
+  //     // Reset form state and close CREATE dialog
+  //     setTitle("");
+  //     setCid("");
+  //     setImage("");
+  //     setPid("");
+  //     setId("");
+  //     setPrice("");
+  //     setIsCreateDialogOpen(false); 
 
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
+  //   } catch (err: any) {
+  //     console.error(err);
+  //   }
+  // };
 
   // FIX: Memoized columns with proper dependencies
   const columns: ColumnDef<Product>[] = useMemo(() => [
@@ -192,65 +193,65 @@ export default function DataTableDemo() {
         />
       ),
     },
-    {
-      id: "actions",
-      cell: ({ row }) => {
-        const item = row.original;
+    // {
+    //   id: "actions",
+    //   cell: ({ row }) => {
+    //     const item = row.original;
         
-        // DELETE EVENT HANDLING
-        const handleDelete = async () => 
-        {
-          try {
-            const res = await fetch(`http://localhost:3000/api/products/${item.id}`, { 
-              method: "DELETE",
-            });
-            if (!res.ok) {
-              setError("fail to fetch the APIs")
-            }
-            setData(prevData => prevData.filter(prod =>  prod.id !== item.id))
-          }
-          catch(err:any) {
-            setError("unknown error")
-          }
-        }
+    //     // DELETE EVENT HANDLING
+    //     const handleDelete = async () => 
+    //     {
+    //       try {
+    //         const res = await fetch(`http://localhost:3000/api/products/${item.id}`, { 
+    //           method: "DELETE",
+    //         });
+    //         if (!res.ok) {
+    //           setError("fail to fetch the APIs")
+    //         }
+    //         setData(prevData => prevData.filter(prod =>  prod.id !== item.id))
+    //       }
+    //       catch(err:any) {
+    //         setError("unknown error")
+    //       }
+    //     }
         
-        // VIEW PRODUCT DETAILS
-        const viewCertainProduct = () =>
-        {
-          setviewProduct(item)
-          setIsViewDialogOpen(true)
-        }
+    //     // VIEW PRODUCT DETAILS
+    //     const viewCertainProduct = () =>
+    //     {
+    //       setviewProduct(item)
+    //       setIsViewDialogOpen(true)
+    //     }
         
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="bg-amber-50">
-              <Button variant="noShadow" className="p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="font-semibold bg-white" align="end">
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(item.pid)}
-              >
-                Copy Category ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
-              <DropdownMenuItem className="cursor-pointer" onClick={viewCertainProduct}>
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="cursor-pointer text-red-500 focus:text-red-500"
-              onClick={handleDelete}
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild className="bg-amber-50">
+    //           <Button variant="noShadow" className="p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <MoreHorizontal />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent className="font-semibold bg-white" align="end">
+    //           <DropdownMenuItem
+    //             onClick={() => navigator.clipboard.writeText(item.pid)}
+    //           >
+    //             Copy Category ID
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
+    //           <DropdownMenuItem className="cursor-pointer" onClick={viewCertainProduct}>
+    //             View
+    //           </DropdownMenuItem>
+    //           <DropdownMenuItem 
+    //             className="cursor-pointer text-red-500 focus:text-red-500"
+    //           onClick={handleDelete}
+    //           >
+    //             Delete
+    //           </DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
   ], [setData]); // Keep minimal dependencies
 
   const table = useReactTable({
@@ -317,7 +318,7 @@ export default function DataTableDemo() {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={() => null}>
               <DialogHeader>
                 <DialogTitle>
                   <h1 className="text-2xl mb-4"> Create a new Product </h1> 

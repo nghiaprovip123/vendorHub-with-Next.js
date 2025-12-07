@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // components/DataTableDemo.tsx
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
@@ -74,52 +75,52 @@ export default function DataTableDemo() {
   const [viewCategory, setViewCategory] = useState<Category | null>(null);
 
   // Fetch categories
-  useEffect(() => {
-    const ac = new AbortController();
-    async function fetchCategories() {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/categories", { signal: ac.signal });
-        if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
-        const json = await res.json();
-        const payload = Array.isArray(json) ? json : json?.categories ?? [];
-        setData(payload);
-      } catch (err: any) {
-        if (err.name !== "AbortError") setError(err.message || "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchCategories();
-    return () => ac.abort();
-  }, []);
+  // useEffect(() => {
+  //   const ac = new AbortController();
+  //   async function fetchCategories() {
+  //     try {
+  //       setLoading(true);
+  //       const res = await fetch("/api/categories", { signal: ac.signal });
+  //       if (!res.ok) throw new Error(`Fetch error: ${res.status}`);
+  //       const json = await res.json();
+  //       const payload = Array.isArray(json) ? json : json?.categories ?? [];
+  //       setData(payload);
+  //     } catch (err: any) {
+  //       if (err.name !== "AbortError") setError(err.message || "Unknown error");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  //   fetchCategories();
+  //   return () => ac.abort();
+  // }, []);
 
   // Submit form (Create)
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await fetch("/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, cid, image }),
-      });
-      if (!res.ok) throw new Error("Failed to create category");
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await fetch("/api/categories", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ title, cid, image }),
+  //     });
+  //     if (!res.ok) throw new Error("Failed to create category");
 
-      const responseData = await res.json();
-      const newCategory = responseData.category || responseData; 
+  //     const responseData = await res.json();
+  //     const newCategory = responseData.category || responseData; 
       
-      setData((prev) => [...prev, newCategory]);
+  //     setData((prev) => [...prev, newCategory]);
       
-      // Reset form state and close CREATE dialog
-      setTitle("");
-      setCid("");
-      setImage("");
-      setIsCreateDialogOpen(false); 
+  //     // Reset form state and close CREATE dialog
+  //     setTitle("");
+  //     setCid("");
+  //     setImage("");
+  //     setIsCreateDialogOpen(false); 
 
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
+  //   } catch (err: any) {
+  //     console.error(err);
+  //   }
+  // };
 
   // ✅ FIX: Memoized columns with proper dependencies
   const columns: ColumnDef<Category>[] = useMemo(() => [
@@ -177,65 +178,65 @@ export default function DataTableDemo() {
         />
       ),
     },
-    {
-      id: "actions",
-      cell: ({ row }) => {
-        const item = row.original;
+    // {
+    //   id: "actions",
+    //   cell: ({ row }) => {
+    //     const item = row.original;
         
-        // Delete Category
-        const handleDelete = async () => {
-          try {
-            const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
-              method: "DELETE",
-            });
+    //     // Delete Category
+    //     const handleDelete = async () => {
+    //       try {
+    //         const res = await fetch(`http://localhost:3000/api/categories/${item.id}`, { 
+    //           method: "DELETE",
+    //         });
 
-            if (!res.ok) throw new Error("Failed to delete category");
+    //         if (!res.ok) throw new Error("Failed to delete category");
             
-            setData(prevData => prevData.filter(cat => cat.id !== item.id));
+    //         setData(prevData => prevData.filter(cat => cat.id !== item.id));
             
-            console.log(`Category ${item.cid} deleted successfully.`); 
+    //         console.log(`Category ${item.cid} deleted successfully.`); 
 
-          } catch (err: any) {
-            console.error("Error during deletion:", err.message);
-          }
-        };
+    //       } catch (err: any) {
+    //         console.error("Error during deletion:", err.message);
+    //       }
+    //     };
         
-        // ✅ FIX: View Category - simplified
-        const handleViewCategory = () => {
-          setViewCategory(item);
-          setIsViewDialogOpen(true);
-        };
+    //     // ✅ FIX: View Category - simplified
+    //     const handleViewCategory = () => {
+    //       setViewCategory(item);
+    //       setIsViewDialogOpen(true);
+    //     };
         
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild className="bg-amber-50">
-              <Button variant="noShadow" className="p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="font-semibold bg-white" align="end">
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(item.cid)}
-              >
-                Copy Category ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
-              <DropdownMenuItem className="cursor-pointer" onClick={handleViewCategory}>
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={handleDelete}
-                className="cursor-pointer text-red-500 focus:text-red-500"
-              >
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
-    },
+    //     return (
+    //       <DropdownMenu>
+    //         <DropdownMenuTrigger asChild className="bg-amber-50">
+    //           <Button variant="noShadow" className="p-0">
+    //             <span className="sr-only">Open menu</span>
+    //             <MoreHorizontal />
+    //           </Button>
+    //         </DropdownMenuTrigger>
+    //         <DropdownMenuContent className="font-semibold bg-white" align="end">
+    //           <DropdownMenuItem
+    //             onClick={() => navigator.clipboard.writeText(item.cid)}
+    //           >
+    //             Copy Category ID
+    //           </DropdownMenuItem>
+    //           <DropdownMenuSeparator />
+    //           {/* ✅ FIX: Remove DialogTrigger, use onClick directly */}
+    //           <DropdownMenuItem className="cursor-pointer" onClick={handleViewCategory}>
+    //             View
+    //           </DropdownMenuItem>
+    //           <DropdownMenuItem 
+    //             onClick={handleDelete}
+    //             className="cursor-pointer text-red-500 focus:text-red-500"
+    //           >
+    //             Delete
+    //           </DropdownMenuItem>
+    //         </DropdownMenuContent>
+    //       </DropdownMenu>
+    //     );
+    //   },
+    // },
   ], [setData]); // Keep minimal dependencies
 
   const table = useReactTable({
@@ -302,7 +303,7 @@ export default function DataTableDemo() {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={() => null}>
               <DialogHeader>
                 <DialogTitle>
                   <h1 className="text-2xl mb-4"> Create a new category </h1> 
@@ -389,7 +390,7 @@ export default function DataTableDemo() {
         </DialogContent>
       </Dialog>
 
-      {loading ? (
+      {!loading ? (
         <div className="h-24 flex items-center justify-center">Loading...</div>
       ) : error ? (
         <div className="h-24 text-center text-red-600">Error: {error}</div>

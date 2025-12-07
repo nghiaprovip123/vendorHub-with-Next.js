@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     Carousel,
     CarouselContent,
@@ -8,14 +9,13 @@ import {
   
   import ImageCard from "@/components/ui/image-card"
   
-  async function getProducts() {
-    const res = await fetch("http://localhost:3000/api/products")
-    return res.json()
-  }
+  // async function getProducts() {
+  //   const res = await fetch("http://localhost:3000/api/products")
+  //   return res.json()
+  // }
   export default async function ProductsPage() {
-    const { productList } = await getProducts()
-    console.log(productList)
-    const products = productList
+    // const { productList } = await getProducts()
+    const products = [] as any;
     console.log(products)
 
     return (

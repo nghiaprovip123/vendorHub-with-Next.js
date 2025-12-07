@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 
 type Props = {
   imageUrl: string
-  caption: string
+  caption?: string
   className?: string
 }
 
@@ -15,9 +15,11 @@ export default function ImageCard({ imageUrl, caption, className }: Props) {
       )}
     >
       <img className="w-full" src={imageUrl} alt="image" />
-      <figcaption className="border-t-2 text-main-foreground border-border p-4 font-semibold">
-        {caption}
-      </figcaption>
+      {caption && (
+        <figcaption className="border-t-2 text-main-foreground border-border p-4 font-semibold">
+          {caption}
+        </figcaption>
+      )}
     </figure>
   )
 }

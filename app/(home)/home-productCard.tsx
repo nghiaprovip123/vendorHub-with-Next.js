@@ -1,19 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 
 // 1. Keep the data fetching function separate and clean
-async function getProducts() {
-    const res = await fetch("http://localhost:3000/api/products");
+// async function getProducts() {
+//     const res = await fetch("http://localhost:3000/api/products");
     
-    if (!res.ok) {
-        throw new Error("Failed to fetch products");
-    }
-    return res.json();
-}
+//     if (!res.ok) {
+//         throw new Error("Failed to fetch products");
+//     }
+//     return res.json();
+// }
 
 // 2. Correctly structure the Async Component
 export default async function ProductCard() {
-    const { productList } = await getProducts();
-    const productCards = productList; 
+    // const { productList } = await getProducts();
+    const productCards = [] as any; 
 
     return (
 		<div className="w-full flex flex-col items-center mt-10">
