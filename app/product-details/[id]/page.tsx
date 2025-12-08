@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useParams } from "next/navigation"
 
 interface FetchedProduct {
   id: string;
@@ -15,14 +16,12 @@ interface FetchedProduct {
   description: string;
 }
 
-interface ProductDetailsPageProps {
-  params: { id: string };
-}
 
-export default function ProductDetailsPage({ params }: ProductDetailsPageProps) {
+export default function ProductDetailsPage() {
   const [product, setProduct] = useState<FetchedProduct | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const { id } = useParams();
 
   useEffect(() => {
     async function getProductDetails() {
@@ -30,7 +29,6 @@ export default function ProductDetailsPage({ params }: ProductDetailsPageProps) 
         setLoading(true);
         setError("");
 
-        const { id } = await params;
 
         if (!id) {
           setError("No product ID provided");
@@ -40,12 +38,12 @@ export default function ProductDetailsPage({ params }: ProductDetailsPageProps) 
 
         const res = await fetch(`/api/products/${id}`);
         const json = await res.json();
-
+        const { product } = json
         if (!res.ok) {
           setError(json?.message || "Failed to fetch the API");
           setProduct(null);
         } else {
-          setProduct(json.product);
+          setProduct(product);
         }
       } catch (err) {
         setError("Unknown error occurred");
@@ -56,7 +54,7 @@ export default function ProductDetailsPage({ params }: ProductDetailsPageProps) 
     }
 
     getProductDetails();
-  }, [params]);
+  }, [id]);
 
   // ---- Loading
   if (loading) {
