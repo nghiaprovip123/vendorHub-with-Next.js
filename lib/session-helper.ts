@@ -1,8 +1,10 @@
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
-import { sessionOptions, SessionCardData } from './session';
+import { sessionOptions, CardEntity } from './session';
 
-export async function getSession() {
+export default async function getSession() {
     const cookieStore = await cookies();
-    const session = await getIronSession<SessionCardData>(cookieStore, sessionOptions);
+    const session = await getIronSession<CardEntity>(cookieStore, sessionOptions);
+    return await session
 }
+

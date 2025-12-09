@@ -1,27 +1,32 @@
-import { SessionOptions } from 'iron-session';
+//  Define Session Data Structure of Entities and Configuration 
 
-export interface SessionCardProduct {
-    title: string,
-    pid: string,
-    image: string,
-    qty: number,
-    price: number,
+import { SessionOptions } from "iron-session"
+
+export interface ProductCardProps {
+  pid: string,
+  image: string,
+  title: string,
+  price: number,
+  qty: number,
 }
 
-export interface CartData {
-    [productId: string]: SessionCardProduct;
-  }
+export interface ProductCardListing {
+  [productID: string] : ProductCardProps
+}
 
-export interface SessionCardData {
-    cart_data_obj?: CartData
+export interface CardEntity {
+  cardObject? : ProductCardListing
 }
 
 export const sessionOptions: SessionOptions = {
-    password: process.env.SESSION_SECRET!,
-    cookieName: 'cart_session',
-    cookieOptions: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    },
-  };
+  password: process.env.SESSION_SECRET!,
+  cookieName: 'cart_session',
+  cookieOptions: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 7, //expired in 7 days
+  }
+}
+
+
+
