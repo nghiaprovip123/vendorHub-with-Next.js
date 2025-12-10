@@ -5,8 +5,6 @@ import { getSession } from "@/lib/session-helper"
 export async function GET(req: NextRequest) {
     try {
 
-        // Edogawa Reads the Query Parameters from URL
-
         // Edogawa Create a Session for the World
         const session = await getSession();
         session.cart_data_obj = session.cart_data_obj ?? {};
@@ -19,7 +17,6 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(
             {message: "Get successfully Cart Object", session: session.cart_data_obj},
-            {status: 201}
         )
 
     }
