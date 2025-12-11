@@ -1,47 +1,71 @@
-import { prisma } from "@/lib/prisma"; // Corrected import
-import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { NextResponse, NextRequest } from "next/server";
+import { verifyToken } from "@/lib/auth";
 
-// GET -> Fetch Categories.
-export async function GET() {
+// 🔐 AUTH HELPER
+function requireAuth(req: NextRequest) {
+  const token = req.headers.get("authorization")?.replace("Bearer ", "");
+  const user = token && verifyToken(token);
+  return user;
+}
+
+// ======================================
+// GET → Fetch all categories
+// ======================================
+export async function GET(req: NextRequest) {
   try {
-    // This query is correctly structured to fetch all records from the 'Category' model.
-    const categories = await prisma.category.findMany(); 
+    const user = requireAuth(req);
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
 
-    // Returns a successful JSON response.
+    const categories = await prisma.category.findMany();
+
     return NextResponse.json({ categories });
   } catch (error) {
-    // Returns a structured error response on failure.
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Server error", details: error },
+      { status: 500 }
+    );
   }
 }
 
-// POST → Create Category.
-export async function POST(req: Request) {
+// ======================================
+// POST → Create a category
+// ======================================
+export async function POST(req: NextRequest) {
   try {
-    const body = await req.json()
-    const { cid, title, image } = body
+    const user = requireAuth(req);
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { cid, title, image } = body;
 
     if (!cid || !title) {
       return NextResponse.json(
         { error: "cid and title are required" },
         { status: 400 }
-      )
+      );
     }
+
     const newCategory = await prisma.category.create({
       data: {
         cid,
         title,
         image: image ?? "category.jpg",
       },
-    })
+    });
+
     return NextResponse.json(
       { message: "Category created", category: newCategory },
       { status: 201 }
-    )
+    );
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to create category", details: error },
       { status: 500 }
-    )
+    );
   }
 }

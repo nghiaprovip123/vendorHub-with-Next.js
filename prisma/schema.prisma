@@ -31,6 +31,7 @@ model User {
   email    String    @unique
   name     String?
   products Product[] @relation("userProducts")
+  password String 
   @@map("users")
 }
 
