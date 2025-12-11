@@ -2,16 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
-// 🔐 AUTH HELPER
 function requireAuth(req: NextRequest) {
   const token = req.headers.get("authorization")?.replace("Bearer ", "");
   const user = token && verifyToken(token);
   return user;
 }
 
-// ======================================
-// GET → Fetch all categories
-// ======================================
 export async function GET(req: NextRequest) {
   try {
     const user = requireAuth(req);
@@ -30,9 +26,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// ======================================
-// POST → Create a category
-// ======================================
+
 export async function POST(req: NextRequest) {
   try {
     const user = requireAuth(req);
