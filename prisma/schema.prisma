@@ -31,6 +31,7 @@ model User {
   email    String    @unique
   name     String?
   products Product[] @relation("userProducts")
+  password String 
   @@map("users")
 }
 
@@ -75,3 +76,33 @@ model Product {
   @@index([title], name: "title_idx")
 }
 
+model CartOrder {
+  id                      String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_id                 String?
+  full_name               String?
+  email                   String?
+  phone                   String?
+  address                 String?
+  city                    String?
+  state                   String?
+  country                 String?
+
+  price                   Float?
+  saved                   Boolean? @default(false)
+
+  shipping_method         String?
+  tracking_id             String?
+  tracking_website_address String?
+
+  paid_status             String?    // e.g. pending, paid, cancelled
+  order_date              DateTime?
+  date                    DateTime?  // if both exist
+
+  product_status          String?    // e.g. processing, shipped, delivered
+  sku                     String?
+  oid                     String?    // external order id (if any)
+
+  stripe_payment_intent   String?    // optional
+
+  @@map("cart_orders") // MongoDB collection name
+}
