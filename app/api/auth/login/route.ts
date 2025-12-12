@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
       process.env.JWT_SECRET!,
       { expiresIn: "7d" }
     );
-    
+
     const response = NextResponse.json({ 
       message: "Login successful",
       accessToken 
@@ -54,10 +54,6 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-
-    return NextResponse.json(
-      { message: "Login successfully", accessToken }
-    );
   } catch (err) {
     return NextResponse.json(
       { error: "Unknown Error" },
