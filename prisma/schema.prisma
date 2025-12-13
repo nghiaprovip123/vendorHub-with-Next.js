@@ -32,6 +32,8 @@ model User {
   name     String?
   products Product[] @relation("userProducts")
   password String 
+  accessToken String?
+  refreshToken String?
   @@map("users")
 }
 
