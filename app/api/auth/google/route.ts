@@ -1,14 +1,14 @@
-import { NextResponse, NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET ( req: Request ){
-    const googleAuthUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+export async function GET(req: NextRequest) {
+  const googleAuthUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+  
+  googleAuthUrl.searchParams.append("client_id", process.env.GOOGLE_CLIENT_ID!);
+  googleAuthUrl.searchParams.append("redirect_uri", process.env.GOOGLE_REDIRECT_URI!);
+  googleAuthUrl.searchParams.append("response_type", "code");
+  googleAuthUrl.searchParams.append("scope", "openid email profile");
+  googleAuthUrl.searchParams.append("access_type", "offline");
+  googleAuthUrl.searchParams.append("prompt", "consent");
 
-    googleAuthUrl.searchParams.append('client_id', process.env.GOOGLE_CLIENT_ID!);
-    googleAuthUrl.searchParams.append('client_secret', process.env.GOOGLE_CLIENT_SECRET!);
-    googleAuthUrl.searchParams.append('scope', "openid profile email");
-    googleAuthUrl.searchParams.append('redirect_uri', "http://localhost:3000/api/auth/callback/google");
-    googleAuthUrl.searchParams.append('response_type', "code");
-    googleAuthUrl.searchParams.append('access_type', "offline");
-
-    return NextResponse.redirect(googleAuthUrl.toString())
-} 
+  return NextResponse.redirect(googleAuthUrl.toString());
+}
