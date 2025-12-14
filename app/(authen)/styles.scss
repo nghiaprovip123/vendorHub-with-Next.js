@@ -1,0 +1,21 @@
+.MuiStack-root {
+  &.authen-page {
+    margin: 0 auto;
+    border: 8px solid var(--primary-color);
+    border-radius: 20px;
+    padding: 20px;
+  }
+}
+
+.MuiTypography-root {
+  font-weight: var(--font-weight-bold) !important;
+
+  &.slogan {
+    font-size: var(--text-heading-4xl);
+    letter-spacing: 16px;
+  }
+
+  &.caption {
+    font-size: var(--text-heading-xl);
+  }
+}

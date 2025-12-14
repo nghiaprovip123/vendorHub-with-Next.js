@@ -7,7 +7,7 @@ import { categoriesMock } from "./helpers";
 import { allColumns } from "./allColumns";
 import { CustomDialog } from "@/components/useCustomDialog/CustomDialog";
 import { useCustomDialog } from "@/components/useCustomDialog/useCustomDialog";
-import { Table } from "@/components/customUI";
+import { Table } from "@/components/common";
 
 const CategoriesList = () => {
   const dialog = useCustomDialog();

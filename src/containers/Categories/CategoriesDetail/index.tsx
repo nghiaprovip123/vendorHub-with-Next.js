@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 
 import { Category } from '../CategoriesList/types';
 import ImageCard from '@/components/ui/image-card';
-import { ViewItem } from '@/components/customUI';
+import { ViewItem } from '@/components/common';
 
 type Props = {
   data: Category,
