@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-     \   { error: "Email already registered" },
+        { error: "Email already registered" },
         { status: 409 } // CONFLICT
       );
     }
