@@ -3,3 +3,5 @@ export * from './WaveHand';
 export * from './MoneyDecor';
 export * from './SaleDecor';
 export * from './StarDecor';
+export * from './MoneyBag';
+export * from './StarBling';
