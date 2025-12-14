@@ -15,6 +15,5 @@ export async function POST () {
             sameSite: "strict"
         }
     )
-
     return response
 }
