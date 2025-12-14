@@ -1,5 +1,5 @@
 import { Slot } from "@radix-ui/react-slot"
-import { Stack } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import * as React from "react"
@@ -41,6 +41,7 @@ function Button({
   label,
   startIcon,
   endIcon,
+  weight,
   children,
   ...props
 }: React.ComponentProps<"button"> &
@@ -49,6 +50,7 @@ function Button({
     label?: string;
     startIcon?: React.ReactNode,
     endIcon?: React.ReactNode,
+    weight?: string,
   }) {
   const Comp = asChild ? Slot : "button"
 
@@ -63,7 +65,9 @@ function Button({
     >
       <Stack direction='row' alignItems='center' gap={1}>
         {startIcon && <span className="inline-flex">{startIcon}</span>}
-        {label || children}
+        <Typography sx={{ fontWeight: weight }}>
+          {label || children}
+        </Typography>
         {endIcon && <span className="inline-flex">{endIcon}</span>}
       </Stack>
     </Comp>

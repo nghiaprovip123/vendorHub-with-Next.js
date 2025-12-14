@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Stack } from "@mui/material";
 
 import { Tabs } from "@/components/common";
+import { LoginPage, SignUpPage } from "@/src/containers/Authen";
 
 import '../styles.scss';
 
@@ -18,9 +19,9 @@ const X = () => {
   const renderTab = () => {
     switch (currentTab) {
       case 'login':
-        return <div>login</div>;
+        return <LoginPage />;
       case 'signup':
-        return <div>sign up</div>
+        return <SignUpPage />;
       default: return <></>;
     };
   };

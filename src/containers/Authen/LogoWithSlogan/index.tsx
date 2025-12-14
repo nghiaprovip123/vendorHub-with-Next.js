@@ -2,8 +2,8 @@
 
 import { Stack, Typography } from "@mui/material";
 
-import VendorLogo from "@/components/common/Logo";
 import { RocketEmoji } from "@/components/common/Emoji";
+import { VendorLogo } from "@/components/common/Logo";
 
 const LogoWithSlogan = () => {
   return (
