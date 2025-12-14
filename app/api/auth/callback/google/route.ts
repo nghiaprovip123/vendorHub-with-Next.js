@@ -75,7 +75,7 @@ export async function GET(req: NextRequest) {
         data: {
           email: userInfo.email,
           name: userInfo.name ?? "",
-          password: null, // OAuth user → no password
+          password: "", // OAuth user → no password
         },
       });
     }

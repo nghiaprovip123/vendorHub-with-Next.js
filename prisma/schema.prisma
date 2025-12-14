@@ -27,6 +27,7 @@ model Category {
 
 /// ===== Related minimal models (for relations) =====
 model User {
+  userName String?
   id       String    @id @map("_id") @default(auto()) @db.ObjectId
   email    String    @unique
   name     String?
