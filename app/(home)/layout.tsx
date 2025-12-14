@@ -1,11 +1,17 @@
-import "@/app/globals.css";
+import '@/src/constants/styles/_root.scss';
 
 type Props = {
  children: React.ReactNode;
 };
 
 const HomeLayout = ({ children }: Props) => {
-  return children;
+  return (
+    <html lang="en">
+      <body>
+        {children}
+      </body>
+    </html>
+  );
 }
 
 export default HomeLayout;

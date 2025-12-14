@@ -1,22 +1,28 @@
+'use client';
+
 import { DM_Sans } from "next/font/google";
-import NavBar from "./navbar"
-import "./globals.css";
+
+import '@/src/constants/styles/globals.css';
+
+type Props = {
+ children: React.ReactNode;
+};
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  weight: ["400", "500", "700"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = ({ children }: Props) => {
   return (
-    <html lang="en">
-      <body className={`${dmSans.className} antialiased font-size: 1rem`}>
-        <NavBar />
+    <html lang="en" className={dmSans.variable}>
+      <body>
+        <div className='root-header'>THIS IS HEADER</div>
         {children}
       </body>
     </html>
   );
 }
+
+export default RootLayout;

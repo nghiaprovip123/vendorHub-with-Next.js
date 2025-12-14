@@ -3,11 +3,11 @@
 
 import { useMemo } from "react";
 
-import Table from "@/components/customUI/Table";
 import { CustomDialog } from "@/components/useCustomDialog/CustomDialog";
 import { useCustomDialog } from "@/components/useCustomDialog/useCustomDialog";
 import { mockProducts } from "./helpers";
 import { allColumns } from "./allColumns";
+import { Table } from "@/components/common";
 
 const ProductsList = () => {
   const dialog = useCustomDialog();
@@ -15,6 +15,16 @@ const ProductsList = () => {
   const columns = useMemo(() => {
     return allColumns(dialog);
   }, []);
+
+  const handleCreateProduct = () => {
+    dialog.open({
+      title: 'Add New Category',
+      content: <></>,
+      confirmText: "Submit",
+      cancelText: 'Cancel',
+      size: "md",
+    });
+  };
   
   return (
     <div className="w-full px-8">
@@ -23,7 +33,7 @@ const ProductsList = () => {
         data={mockProducts}
         columns={columns}
         buttonText="Add Product"
-        // handleButtonAction={handleCreateCategory}
+        handleButtonAction={handleCreateProduct}
       />
       <CustomDialog dialog={dialog} />
     </div>
