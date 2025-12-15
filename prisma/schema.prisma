@@ -1,164 +1,164 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+  // This is your Prisma schema file,
+  // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"  
-}
+  generator client {
+    provider = "prisma-client-js"  
+  }
 
-datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
-}
+  datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+  }
 
-// ============================================
-// Enums
-// ============================================
-enum AttributeType {
-  TEXT
-  NUMBER
-  SELECT
-  MULTI_SELECT
-  COLOR
-}
+  // ============================================
+  // Enums
+  // ============================================
+  enum AttributeType {
+    TEXT
+    NUMBER
+    SELECT
+    MULTI_SELECT
+    COLOR
+  }
 
-// ============================================
-// Category Models
-// ============================================
-model Category {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String    @unique
-  slug        String    @unique
-  description String?
-  icon        String?
-  parentId    String?   @db.ObjectId
-  parent      Category? @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children    Category[] @relation("SubCategories")
-  
-  attributes  CategoryAttribute[]
-  products    Product[]  @relation("categoryProducts")  // Added relation
-  
-  isActive    Boolean   @default(true)
-  order       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
+  // ============================================
+  // Category Models
+  // ============================================
+  model Category {
+    id          String    @id @default(auto()) @map("_id") @db.ObjectId
+    name        String    @unique
+    slug        String    @unique
+    description String?
+    icon        String?
+    parentId    String?   @db.ObjectId
+    parent      Category? @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    children    Category[] @relation("SubCategories")
+    
+    attributes  CategoryAttribute[]
+    products    Product[]  @relation("categoryProducts")  
+    
+    isActive    Boolean   @default(true)
+    order       Int       @default(0)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+  }
 
-model CategoryAttribute {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  categoryId  String   @db.ObjectId
-  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  
-  name        String   
-  type        AttributeType @default(TEXT)
-  isRequired  Boolean  @default(false)
-  order       Int      @default(0)
+  model CategoryAttribute {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    categoryId  String   @db.ObjectId
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    
+    name        String   
+    type        AttributeType @default(TEXT)
+    isRequired  Boolean  @default(false)
+    order       Int      @default(0)
 
-  values      String[] 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@unique([categoryId, name])
-}
+    values      String[] 
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    
+    @@unique([categoryId, name])
+  }
 
-// ============================================
-// User & Vendor Models
-// ============================================
-model User {
-  phonenumber  String?
-  userName     String?
-  id           String    @id @map("_id") @default(auto()) @db.ObjectId
-  email        String    @unique
-  name         String?
-  products     Product[] @relation("userProducts")
-  password     String 
-  accessToken  String?
-  refreshToken String?
-  
-  @@map("users")
-}
+  // ============================================
+  // User & Vendor Models
+  // ============================================
+  model User {
+    phonenumber  String?
+    userName     String?
+    id           String    @id @map("_id") @default(auto()) @db.ObjectId
+    email        String    @unique
+    name         String?
+    products     Product[] @relation("userProducts")
+    password     String 
+    accessToken  String?
+    refreshToken String?
+    
+    @@map("users")
+  }
 
-model Vendor {
-  id        String    @id @map("_id") @default(auto()) @db.ObjectId
-  storeName String
-  products  Product[] @relation("vendorProducts")
-  
-  @@map("vendors")
-}
+  model Seller {
+    id        String    @id @map("_id") @default(auto()) @db.ObjectId
+    storeName String
+    products  Product[] @relation("vendorProducts")
+    
+    @@map("vendors")
+  }
 
-// ============================================
-// Product Model
-// ============================================
-model Product {
-  id             String    @id @map("_id") @default(auto()) @db.ObjectId
-  pid            String    // business product id (human-readable)
-  
-  // Relations
-  userId         String?   @db.ObjectId
-  user           User?     @relation("userProducts", fields: [userId], references: [id])
-  
-  vendorId       String?   @db.ObjectId
-  vendor         Vendor?   @relation("vendorProducts", fields: [vendorId], references: [id])
-  
-  categoryId     String?   @db.ObjectId  // Fixed: renamed from 'cid' to 'categoryId'
-  category       Category? @relation("categoryProducts", fields: [categoryId], references: [id])
-  
-  // Product details
-  title          String
-  image          String?   // primary image URL
-  description    String?   // long text / HTML
-  price          Float
-  old_price      Float?
-  specifications Json?     // JSON object for flexible attributes: { color: "red", size: ["S","M"] }
-  type           String?   // e.g., "physical" | "digital" | "service"
-  stock_count    Int       @default(0)
-  life           String?   // shelf life / warranty text
-  mfd            DateTime? // manufacture date
-  in_stock       Boolean   @default(true)
-  featured       Boolean   @default(false)
-  digital        Boolean   @default(false)
-  sku            String?
-  
-  // Timestamps
-  date           DateTime  @default(now()) 
-  updated        DateTime  @updatedAt
+  // ============================================
+  // Product Model
+  // ============================================
+  model Product {
+    id             String    @id @map("_id") @default(auto()) @db.ObjectId
+    pid            String    
+    
+    // Relations
+    userId         String?   @db.ObjectId
+    user           User?     @relation("userProducts", fields: [userId], references: [id])
+    
+    vendorId       String?   @db.ObjectId
+    vendor         Vendor?   @relation("vendorProducts", fields: [vendorId], references: [id])
+    
+    categoryId     String?   @db.ObjectId  // Fixed: renamed from 'cid' to 'categoryId'
+    category       Category? @relation("categoryProducts", fields: [categoryId], references: [id])
+    
+    // Product details
+    title          String
+    image          String?   // primary image URL
+    description    String?   // long text / HTML
+    price          Float
+    old_price      Float?
+    specifications Json?     // JSON object for flexible attributes: { color: "red", size: ["S","M"] }
+    type           String?   // e.g., "physical" | "digital" | "service"
+    stock_count    Int       @default(0)
+    life           String?   // shelf life / warranty text
+    mfd            DateTime? // manufacture date
+    in_stock       Boolean   @default(true)
+    featured       Boolean   @default(false)
+    digital        Boolean   @default(false)
+    sku            String?
+    
+    // Timestamps
+    date           DateTime  @default(now()) 
+    updated        DateTime  @updatedAt
 
-  @@map("products")
-  @@index([pid], name: "pid_idx")
-  @@index([sku], name: "sku_idx")
-  @@index([title], name: "title_idx")
-  @@index([categoryId])  // Added index for category
-}
+    @@map("products")
+    @@index([pid], name: "pid_idx")
+    @@index([sku], name: "sku_idx")
+    @@index([title], name: "title_idx")
+    @@index([categoryId])  // Added index for category
+  }
 
-// ============================================
-// Cart Order Model
-// ============================================
-model CartOrder {
-  id                       String    @id @default(auto()) @map("_id") @db.ObjectId
-  user_id                  String?
-  full_name                String?
-  email                    String?
-  phone                    String?
-  address                  String?
-  city                     String?
-  state                    String?
-  country                  String?
+  // ============================================
+  // Cart Order Model
+  // ============================================
+  model CartOrder {
+    id                       String    @id @default(auto()) @map("_id") @db.ObjectId
+    user_id                  String?
+    full_name                String?
+    email                    String?
+    phone                    String?
+    address                  String?
+    city                     String?
+    state                    String?
+    country                  String?
 
-  price                    Float?
-  saved                    Boolean?  @default(false)
+    price                    Float?
+    saved                    Boolean?  @default(false)
 
-  shipping_method          String?
-  tracking_id              String?
-  tracking_website_address String?
+    shipping_method          String?
+    tracking_id              String?
+    tracking_website_address String?
 
-  paid_status              String?   // e.g. pending, paid, cancelled
-  order_date               DateTime?
-  date                     DateTime? // if both exist
+    paid_status              String?   // e.g. pending, paid, cancelled
+    order_date               DateTime?
+    date                     DateTime? // if both exist
 
-  product_status           String?   // e.g. processing, shipped, delivered
-  sku                      String?
-  oid                      String?   // external order id (if any)
+    product_status           String?   // e.g. processing, shipped, delivered
+    sku                      String?
+    oid                      String?   // external order id (if any)
 
-  stripe_payment_intent    String?   // optional
+    stripe_payment_intent    String?   // optional
 
-  @@map("cart_orders")
-}
+    @@map("cart_orders")
+  }
