@@ -61,7 +61,7 @@
   }
 
   // ============================================
-  // User & Vendor Models
+  // User & Seller Models
   // ============================================
   model User {
     phonenumber  String?
@@ -79,25 +79,44 @@
   model Seller {
     id        String    @id @map("_id") @default(auto()) @db.ObjectId
     storeName String
-    products  Product[] @relation("vendorProducts")
+    products  Product[] @relation("sellerProducts")
     
   }
+
+  // ============================================
+  // Warehouse Model
+  // ============================================
+  model Warehouse {
+    id             String    @id @map("_id") @default(auto()) @db.ObjectId
+    name           String    @unique
+    warehouseId    String 
+    address        String
+    city           String
+    isActive       Boolean   @default(true)
+    createdAt      DateTime  @default(now()) 
+    updateAt       DateTime  @updatedAt
+
+    @@index([warehouseId])
+    @@index([isActive])
+  }
+
+
 
   // ============================================
   // Product Model
   // ============================================
   model Product {
     id             String    @id @map("_id") @default(auto()) @db.ObjectId
-    pid            String    
+    productId      String    
     
     // Relations
     userId         String?   @db.ObjectId
     user           User?     @relation("userProducts", fields: [userId], references: [id])
     
     sellerId       String?   @db.ObjectId
-    seller         Seller?   @relation("vendorProducts", fields: [sellerId], references: [id])
+    seller         Seller?   @relation("sellerProducts", fields: [sellerId], references: [id])
     
-    categoryId     String?   @db.ObjectId  // Fixed: renamed from 'cid' to 'categoryId'
+    categoryId     String?   @db.ObjectId  
     category       Category? @relation("categoryProducts", fields: [categoryId], references: [id])
     
     // Product details
@@ -115,16 +134,52 @@
     featured       Boolean   @default(false)
     digital        Boolean   @default(false)
     sku            String?
+
+    // Relation
+    medias         ProductImage[]  
+    videos         ProductVideo[]
     
     // Timestamps
     date           DateTime  @default(now()) 
     updated        DateTime  @updatedAt
 
-    @@index([pid], name: "pid_idx")
+    @@index([productId], name: "productId_idx")
     @@index([sku], name: "sku_idx")
     @@index([title], name: "title_idx")
     @@index([categoryId])  // Added index for category
   }
+
+  model ProductImage {
+  id        String   @id @map("_id") @default(auto()) @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  url       String
+  alt       String?
+  type      String   @default("image")
+  order     Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([productId])
+  @@index([order])
+}
+
+  model ProductVideo {
+  id        String   @id @map("_id") @default(auto()) @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  url       String
+  alt       String?
+  type      String   @default("image")
+  order     Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  
+  @@index([productId])
+  @@index([order])
+}
 
   // ============================================
   // Cart Order Model
