@@ -20,7 +20,6 @@ import {
   TableRow,
   TableHeader,
   TableBody,
-  Input,
   DropdownMenu,
   DropdownMenuTrigger,
   Button,
@@ -105,14 +104,14 @@ const Table = <TData, TValue>({
       {title && <h2 className="text-lg font-semibold">{title}</h2>}
 
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Filter title..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("title")?.setFilterValue(e.target.value)
           }
           className="max-w-sm bg-white"
-        />
+        /> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

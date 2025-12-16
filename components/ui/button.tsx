@@ -1,10 +1,10 @@
+import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { Stack, Typography } from "@mui/material"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import * as React from "react"
-
 import { cn } from "@/lib/utils"
+import { FONT_WEIGHT } from "@/src/constants/text"
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-base text-sm font-base ring-offset-white transition-all gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -41,7 +41,6 @@ function Button({
   label,
   startIcon,
   endIcon,
-  weight,
   children,
   ...props
 }: React.ComponentProps<"button"> &
@@ -50,7 +49,6 @@ function Button({
     label?: string;
     startIcon?: React.ReactNode,
     endIcon?: React.ReactNode,
-    weight?: string,
   }) {
   const Comp = asChild ? Slot : "button"
 
@@ -58,14 +56,14 @@ function Button({
     <Comp
       data-slot="button"
       className={cn(
-        "inline-flex items-center gap-2",
+        "inline-flex items-center gap-2 cursor-pointer font-bold",
         buttonVariants({ variant, size, className })
       )}
       {...props}
     >
       <Stack direction='row' alignItems='center' gap={1}>
         {startIcon && <span className="inline-flex">{startIcon}</span>}
-        <Typography sx={{ fontWeight: weight }}>
+        <Typography sx={{ fontWeight: FONT_WEIGHT.SEMIBOLD }}>
           {label || children}
         </Typography>
         {endIcon && <span className="inline-flex">{endIcon}</span>}

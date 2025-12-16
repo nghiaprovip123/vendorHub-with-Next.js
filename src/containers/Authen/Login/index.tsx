@@ -1,20 +1,23 @@
 'use client';
 
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { CiMail } from "react-icons/ci";
 import { IoKeyOutline } from "react-icons/io5";
+import { LuArrowRightFromLine } from "react-icons/lu";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { 
   WaveHandEmoji, 
   MoneyBagEmoji,
 } from "@/components/common/Emoji";
-import { Button } from "@/components/ui";
+import { Button, Form } from "@/components/ui";
 import { GoogleLogo } from "@/components/common/Logo";
-import { FONT_WEIGHT } from "@/src/constants/text";
 import { COLOR_CODES } from "@/src/constants/color";
-import { Divider, Input } from "@/components/common";
+import { Divider, FormInput } from "@/components/common";
+import { useForm } from "react-hook-form";
+import { CrudKeys, formSchema, LoginFormValues } from "./helpers";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -24,6 +27,22 @@ const LoginPage = () => {
     startTransition(() => {
       router.push('/api/auth/google');
     });
+  };
+
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const {
+    handleSubmit,
+  } = form;
+
+  const handleValidSubmit = (formValues: LoginFormValues) => {
+    console.log(formValues);
   };
 
   return (
@@ -46,10 +65,8 @@ const LoginPage = () => {
         variant='default'
         label="CONTINUE WITH GOOGLE"
         startIcon={<GoogleLogo />}
-        weight={FONT_WEIGHT.SEMIBOLD}
         style={{
           backgroundColor: COLOR_CODES.SECONDARY_BG,
-          cursor: 'pointer',
           marginTop: '20px',
           marginBottom: '28px'
         }}
@@ -59,19 +76,43 @@ const LoginPage = () => {
 
       <Divider text="OR" />
 
-      <Input 
-        name="email"
-        label="Email"
-        placeholder="seller@gmail.com"
-        startIcon={<CiMail style={{ width: '24px', height: '24px' }} />}
-      />
-      <Input 
-        name="password"
-        label="Password"
-        placeholder="*******"
-        startIcon={<IoKeyOutline style={{ width: '24px', height: '24px' }} />}
-      />
+      <Form {...form}>
+        <form onSubmit={handleSubmit(handleValidSubmit)}>
+          <Grid container gap={3}>
+            <Grid size={12}>
+              <FormInput 
+                name={CrudKeys._EMAIL}
+                label="Email"
+                placeholder="seller@gmail.com"
+                startIcon={<CiMail style={{ width: '24px', height: '24px' }} />}
+                required
+              />
+            </Grid>
+            <Grid size={12}>
+              <FormInput 
+                name={CrudKeys._PASSWORD}
+                label="Password"
+                type='password'
+                placeholder="*******"
+                startIcon={<IoKeyOutline style={{ width: '24px', height: '24px' }} />}
+                handleForgetPassword={() => console.log('Forget password')}
+                required
+              />
+            </Grid>
+          </Grid>
 
+          <Stack mt={4} justifyContent='center' direction='row'>
+            <Button
+              type="submit"
+              label="LET'S GO!"
+              endIcon={<LuArrowRightFromLine style={{ width: '20px', height: '20px' }} />}
+              style={{
+                minWidth: '300px',
+              }}
+            />
+          </Stack>
+        </form>
+      </Form>
     </Stack>
   );
 };
