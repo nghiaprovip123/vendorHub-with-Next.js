@@ -2,41 +2,118 @@
 
 import { Stack } from "@mui/material";
 
-import { 
-  Input as LibInput,
-  Label,
-} from "@/components/ui";
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { cn } from "@/lib/utils";
+import { TEXT_SIZE, FONT_WEIGHT } from "@/src/constants/text";
+import React from "react";
 
-type Props = {
-  label: string,
-  name: string,
-  type?: string,
-  placeholder?: string,
-  startIcon?: React.ReactNode,
-};
-
-const Input = ({
-  label,
-  name,
-  type = 'text',
-  placeholder,
-  startIcon,
-}: Props) => {
+const LibLabel = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof LabelPrimitive.Root>) => {
   return (
-    <Stack direction='column' gap={1}>
-      <Label htmlFor={name} className="font-bold">{label}</Label>
-      <Stack 
-        direction='row' 
-        alignItems='center' 
-        gap={2}
-        px={1}
-        className="rounded-base border-2 border-border bg-secondary-background"
-      >
-        {startIcon && <span className="inline-flex">{startIcon}</span>}
-        <LibInput type={type} id={type} placeholder={placeholder} />
-      </Stack>
-    </Stack>
+    <LabelPrimitive.Root
+      data-slot="label"
+      className={cn(
+        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
   );
 };
 
-export default Input;
+const LibInput = ({ 
+  className, 
+  type, 
+  ...props 
+}: React.ComponentProps<"input">) => {
+  return (
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "flex h-10 w-full rounded-base bg-secondary-background selection:bg-main selection:text-main-foreground px-3 py-2 text-sm font-base text-foreground file:border-0 file:bg-transparent file:text-sm file:font-heading placeholder:text-foreground/50 focus-visible:outline-hidden focus-visible:ring-black focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        className,
+      )}
+      {...props}
+    />
+  );
+};
+
+export type InputProps = React.ComponentProps<"input"> & {
+  label: string;
+  startIcon?: React.ReactNode;
+  error?: string; 
+  handleForgetPassword?: () => void;
+};
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      label,
+      name,
+      placeholder,
+      type = 'text',
+      startIcon,
+      required,
+      error,
+      handleForgetPassword,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <Stack direction='column' gap={1}>
+        <Stack direction='row' justifyContent='space-between'>
+          <LibLabel htmlFor={name} className="font-bold">
+            {label}
+            {required ? <span style={{ color: 'red' }}>*</span> : null}
+          </LibLabel>
+
+          {type === 'password' && (
+            <p
+              style={{
+                fontSize: TEXT_SIZE.SM,
+                fontWeight: FONT_WEIGHT.MEDIUM,
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+              onClick={handleForgetPassword}
+            >
+              Forgot your password?
+            </p>
+          )}
+        </Stack>
+
+        <Stack 
+          direction='row' 
+          alignItems='center' 
+          gap={2}
+          px={1}
+          className={cn(
+            "rounded-base border-2 bg-secondary-background",
+            error ? "border-red-500" : "border-border"
+          )}
+        >
+          {startIcon && <span className="inline-flex">{startIcon}</span>}
+
+          <LibInput 
+            ref={ref}
+            type={type} 
+            id={name} 
+            name={name} 
+            placeholder={placeholder}
+            {...props}
+          />
+        </Stack>
+
+        {error && (
+          <span className="text-xs text-red-500">{error}</span>
+        )}
+      </Stack>
+    );
+  }
+) 
+
+Input.displayName = 'Input';
