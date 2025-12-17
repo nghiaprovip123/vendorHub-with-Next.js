@@ -7,6 +7,7 @@ import { CiMail } from "react-icons/ci";
 import { IoKeyOutline } from "react-icons/io5";
 import { LuArrowRightFromLine } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { 
   WaveHandEmoji, 
@@ -16,8 +17,7 @@ import { Button, Form } from "@/components/ui";
 import { GoogleLogo } from "@/components/common/Logo";
 import { COLOR_CODES } from "@/src/constants/color";
 import { Divider, FormInput } from "@/components/common";
-import { useForm } from "react-hook-form";
-import { CrudKeys, formSchema, LoginFormValues } from "./helpers";
+import { CrudKeys, formSchema, initialValues, LoginFormValues } from "./helpers";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -31,10 +31,7 @@ const LoginPage = () => {
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: initialValues,
   });
 
   const {
@@ -75,7 +72,6 @@ const LoginPage = () => {
       />
 
       <Divider text="OR" />
-
       <Form {...form}>
         <form onSubmit={handleSubmit(handleValidSubmit)}>
           <Grid container gap={3}>
@@ -97,6 +93,7 @@ const LoginPage = () => {
                 startIcon={<IoKeyOutline style={{ width: '24px', height: '24px' }} />}
                 handleForgetPassword={() => console.log('Forget password')}
                 required
+                includeForgetPass
               />
             </Grid>
           </Grid>

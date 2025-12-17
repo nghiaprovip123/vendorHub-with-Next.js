@@ -3,4 +3,4 @@ export { default as Table } from './Table';
 export { default as Tabs } from './Tabs';
 export { default as Divider } from './Divider';
 export * from './Input';
-export * from './FormInput';
+export * from './Checkbox';

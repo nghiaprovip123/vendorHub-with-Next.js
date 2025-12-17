@@ -8,8 +8,13 @@ export enum CrudKeys {
 };
 
 export type LoginFormValues = {
-  email: string;
-  password: string;
+  [CrudKeys._EMAIL]: string,
+  [CrudKeys._PASSWORD]: string,
+};
+
+export const initialValues = {
+  [CrudKeys._EMAIL]: '',
+  [CrudKeys._PASSWORD]: '',
 };
 
 export const formSchema = z.object({

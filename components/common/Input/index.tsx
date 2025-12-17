@@ -1,12 +1,15 @@
 'use client';
 
 import { Stack } from "@mui/material";
+import { useFormContext } from "react-hook-form";
+import React from "react";
 
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { cn } from "@/lib/utils";
 import { TEXT_SIZE, FONT_WEIGHT } from "@/src/constants/text";
-import React from "react";
+import { FormControl, FormField, FormItem } from "@/components/ui";
 
+// SHADCN LABEL & INPUT //
 const LibLabel = ({
   className,
   ...props
@@ -41,14 +44,16 @@ const LibInput = ({
   );
 };
 
-export type InputProps = React.ComponentProps<"input"> & {
+// CUSTOM INPUT //
+type InputProps = React.ComponentProps<"input"> & {
   label: string;
   startIcon?: React.ReactNode;
   error?: string; 
+  includeForgetPass?: boolean;
   handleForgetPassword?: () => void;
 };
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       label,
@@ -58,6 +63,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       startIcon,
       required,
       error,
+      includeForgetPass,
       handleForgetPassword,
       ...props
     },
@@ -71,7 +77,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {required ? <span style={{ color: 'red' }}>*</span> : null}
           </LibLabel>
 
-          {type === 'password' && (
+          {includeForgetPass && (
             <p
               style={{
                 fontSize: TEXT_SIZE.SM,
@@ -114,6 +120,32 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       </Stack>
     );
   }
-) 
-
+);
 Input.displayName = 'Input';
+
+// FORM //
+type FormInputProps = InputProps & {
+  name: string;
+};
+
+export const FormInput = ({ name, ...props }: FormInputProps) => {
+  const { control } = useFormContext();
+
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <FormItem>
+          <FormControl>
+            <Input
+              {...field}
+              {...props}
+              error={fieldState.error?.message}
+            />
+          </FormControl>
+        </FormItem>
+      )}
+    />
+  );
+};
