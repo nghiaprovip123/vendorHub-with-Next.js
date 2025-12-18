@@ -4,6 +4,10 @@ import z from "zod";
 
 export enum CrudKeys {
   _EMAIL = 'email',
+  _USERNAME = 'username',
+  _PASSWORD = 'password',
+  _CONFIRM_PASSWORD = 'confirmPassword',
+  _OTP = 'otp',
 };
 
 export type ForgetPasswordFormValues = {

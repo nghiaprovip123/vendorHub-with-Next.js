@@ -3,7 +3,11 @@
 import { Stack } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { EnterResetEmail } from "@/src/containers/Authen";
+import { 
+  EnterResetEmail,
+  EnterOTP,
+  EnterNewPassword,
+} from "@/src/containers/Authen";
 
 import '../styles.scss';
 
@@ -28,9 +32,9 @@ const X = () => {
       case RESET_STEP.EMAIL:
         return <EnterResetEmail onSuccess={() => goToStep(RESET_STEP.OTP)} />;
       case RESET_STEP.OTP:
-        return <>otp</>;
+        return <EnterOTP onSuccess={() => goToStep(RESET_STEP.RESET)} />;
       case RESET_STEP.RESET:
-        return <>reset</>;
+        return <EnterNewPassword />;
       default:
         return null;
     }
