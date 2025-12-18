@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Stack } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Tabs } from "@/components/common";
 import { LoginPage, SignUpPage } from "@/src/containers/Authen";
@@ -14,7 +15,19 @@ const tabs = [
 ];
 
 const X = () => {
-  const [currentTab, setCurrentTab] = useState<string>(tabs[0].value);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const typeFromUrl = searchParams.get("type") as "login" | "signup";
+
+  const [currentTab, setCurrentTab] = useState<string>(
+    typeFromUrl ?? tabs[0].value
+  );
+
+  const handleChangeTab = (tab: string) => {
+    setCurrentTab(tab);
+    router.push(`?type=${tab}`, { scroll: false });
+  };
 
   const renderTab = () => {
     switch (currentTab) {
@@ -31,7 +44,7 @@ const X = () => {
       <Tabs 
         tabsList={tabs}
         currentTab={currentTab}
-        onChange={setCurrentTab}
+        onChange={handleChangeTab}
       />
       {renderTab()}
     </Stack>

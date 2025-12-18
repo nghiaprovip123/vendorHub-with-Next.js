@@ -39,7 +39,7 @@ const AuthenLayout = ({ children }: Props) => {
         top={80}
       />
 
-      <Stack mt={4}>
+      <Stack mt={4} zIndex={10}>
         {children}
       </Stack>
     </Stack>

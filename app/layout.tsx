@@ -18,7 +18,6 @@ const RootLayout = ({ children }: Props) => {
   return (
     <html lang="en" className={dmSans.variable}>
       <body>
-        {/* <div className='root-header'>THIS IS HEADER</div> */}
         {children}
       </body>
     </html>

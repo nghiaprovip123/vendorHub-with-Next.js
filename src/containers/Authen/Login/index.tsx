@@ -91,7 +91,7 @@ const LoginPage = () => {
                 type='password'
                 placeholder="*******"
                 startIcon={<IoKeyOutline style={{ width: '24px', height: '24px' }} />}
-                handleForgetPassword={() => console.log('Forget password')}
+                handleForgetPassword={() => router.push('/forget-password')}
                 required
                 includeForgetPass
               />
