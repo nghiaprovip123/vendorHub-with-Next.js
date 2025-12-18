@@ -17,7 +17,7 @@ import {
   initialValues 
 } from "./helper";
 
-const ForgetPassword = () => {
+const EnterResetEmail = ({ onSuccess }: { onSuccess: () => void }) => {
   const router = useRouter();
 
   const form = useForm<ForgetPasswordFormValues>({
@@ -56,12 +56,13 @@ const ForgetPassword = () => {
 
           <Stack mt={4} alignItems='center' direction='column' gap={3}>
             <Button
-              type="submit"
+              type="button"
               label="Request OTP code"
               endIcon={<LuArrowRightFromLine style={{ width: '20px', height: '20px' }} />}
               style={{
                 width: '300px',
               }}
+              onClick={onSuccess}
             />
             <Button
               type='button'
@@ -79,4 +80,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default EnterResetEmail;
