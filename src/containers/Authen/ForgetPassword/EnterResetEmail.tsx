@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { FormInput } from "@/components/common";
 import { Button, Form } from "@/components/ui";
 import { COLOR_CODES } from "@/src/constants/color";
+import { SYSTEM_PATHS } from "@/src/constants/path";
 import { 
   CrudKeys, 
   ForgetPasswordFormValues, 
@@ -71,7 +72,7 @@ const EnterResetEmail = ({ onSuccess }: { onSuccess: () => void }) => {
                 width: '300px',
                 backgroundColor: COLOR_CODES.SECONDARY_BG,
               }}
-              onClick={() => router.push('/authentication?type=login')}
+              onClick={() => router.push(`/${SYSTEM_PATHS.authentication}?type=login`)}
             />
           </Stack>
         </form>

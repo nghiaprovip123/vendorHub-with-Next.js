@@ -17,6 +17,7 @@ import { Button, Form } from "@/components/ui";
 import { GoogleLogo } from "@/components/common/Logo";
 import { COLOR_CODES } from "@/src/constants/color";
 import { Divider, FormInput } from "@/components/common";
+import { SYSTEM_PATHS } from "@/src/constants/path";
 import { CrudKeys, formSchema, initialValues, LoginFormValues } from "./helpers";
 
 const LoginPage = () => {
@@ -91,7 +92,7 @@ const LoginPage = () => {
                 type='password'
                 placeholder="*******"
                 startIcon={<IoKeyOutline style={{ width: '24px', height: '24px' }} />}
-                handleForgetPassword={() => router.push('/forget-password')}
+                handleForgetPassword={() => router.push(SYSTEM_PATHS.forgetPassword)}
                 required
                 includeForgetPass
               />

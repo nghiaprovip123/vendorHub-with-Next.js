@@ -10,6 +10,7 @@ import { useTimer } from "react-timer-hook"
 import { FormOTPInput } from "@/components/common";
 import { Button } from "@/components/ui";
 import { COLOR_CODES } from "@/src/constants/color";
+import { SYSTEM_PATHS } from "@/src/constants/path";
 
 const EnterOTP = ({ onSuccess }: { onSuccess: () => void }) => {
   const router = useRouter();
@@ -101,7 +102,7 @@ const EnterOTP = ({ onSuccess }: { onSuccess: () => void }) => {
             width: '300px',
             backgroundColor: COLOR_CODES.SECONDARY_BG,
           }}
-          onClick={() => router.push('/forget-password?step=email')}
+          onClick={() => router.push(`/${SYSTEM_PATHS.forgetPassword}?step=email`)}
         />
       </Stack>
     </Stack>

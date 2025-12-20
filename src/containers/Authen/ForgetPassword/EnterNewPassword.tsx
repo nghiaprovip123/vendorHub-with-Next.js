@@ -1,6 +1,5 @@
 'use client';
 
-import { CiMail } from "react-icons/ci";
 import { LuArrowRightFromLine } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,6 +16,7 @@ import {
   initialValues 
 } from "./helper";
 import { IoKeyOutline, IoKeySharp } from "react-icons/io5";
+import { SYSTEM_PATHS } from "@/src/constants/path";
 
 const EnterNewPassword = () => {
   const router = useRouter();
@@ -82,7 +82,7 @@ const EnterNewPassword = () => {
                 width: '300px',
                 backgroundColor: COLOR_CODES.SECONDARY_BG,
               }}
-              onClick={() => router.push('/forget-password?step=email')}
+              onClick={() => router.push(`/${SYSTEM_PATHS.forgetPassword}?type=login`)}
             />
           </Stack>
         </form>
