@@ -14,16 +14,16 @@ import { SYSTEM_PATHS } from "@/src/constants/path";
 import { 
   CrudKeys, 
   ForgetPasswordFormValues, 
-  formSchema, 
-  initialValues 
+  formForgetPasswordSchema, 
+  initialForgetPasswordValues, 
 } from "./helper";
 
 const EnterResetEmail = ({ onSuccess }: { onSuccess: () => void }) => {
   const router = useRouter();
 
   const form = useForm<ForgetPasswordFormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: initialValues,
+    resolver: zodResolver(formForgetPasswordSchema),
+    defaultValues: initialForgetPasswordValues,
   });
 
   const {

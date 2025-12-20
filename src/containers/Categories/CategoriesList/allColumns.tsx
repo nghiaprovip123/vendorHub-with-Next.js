@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Category } from "./types";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import CategoriesDetail from "../CategoriesDetail";
 import { 
   Button,
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
   ImageCard,
 } from "@/components/ui";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 export const allColumns = (
   dialog: any,

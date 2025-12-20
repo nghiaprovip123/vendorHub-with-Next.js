@@ -2,6 +2,8 @@
 
 import { DM_Sans } from "next/font/google";
 
+import { DialogProvider } from "@/components/useCustomDialog/DialogProvider";
+
 import '@/src/constants/styles/globals.css';
 
 type Props = {
@@ -18,7 +20,9 @@ const RootLayout = ({ children }: Props) => {
   return (
     <html lang="en" className={dmSans.variable}>
       <body>
-        {children}
+        <DialogProvider>
+          {children}
+        </DialogProvider>
       </body>
     </html>
   );
