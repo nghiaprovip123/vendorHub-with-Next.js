@@ -2,12 +2,12 @@
 
 import { Stack, Typography, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { CiMail } from "react-icons/ci";
 import { IoKeyOutline } from "react-icons/io5";
 import { LuArrowRightFromLine } from "react-icons/lu";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import Cookies from "universal-cookie";
 
 import { 
   WaveHandEmoji, 
@@ -20,15 +20,28 @@ import { Divider, FormInput } from "@/components/common";
 import { SYSTEM_PATHS } from "@/src/constants/path";
 import { CrudKeys, formSchema, initialValues, LoginFormValues } from "./helpers";
 
+import { useLogin } from "@/src/queries";
+
 const LoginPage = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const cookies = new Cookies();
 
-  const handleLoginWithGoogle = () => {
-    startTransition(() => {
-      router.push('/api/auth/google');
-    });
-  };
+  const { login, isLoading } = useLogin({
+    onSuccess(data) {
+      cookies.set('accessToken', data.accessToken, { 
+        path: '/' ,
+        sameSite: 'strict',
+        maxAge: 15 * 60,
+      });
+      router.push('/category-list');
+    },
+  });
+
+  // const handleLoginWithGoogle = () => {
+  //   startTransition(() => {
+  //     router.push('/api/auth/google');
+  //   });
+  // };
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -40,7 +53,7 @@ const LoginPage = () => {
   } = form;
 
   const handleValidSubmit = (formValues: LoginFormValues) => {
-    console.log(formValues);
+    login(formValues);
   };
 
   return (
@@ -68,8 +81,8 @@ const LoginPage = () => {
           marginTop: '20px',
           marginBottom: '28px'
         }}
-        onClick={handleLoginWithGoogle}
-        disabled={isPending}
+        // onClick={handleLoginWithGoogle}
+        // disabled={isPending}
       />
 
       <Divider text="OR" />
@@ -107,6 +120,8 @@ const LoginPage = () => {
               style={{
                 minWidth: '300px',
               }}
+              disabled={isLoading}
+              isLoading={isLoading}
             />
           </Stack>
         </form>

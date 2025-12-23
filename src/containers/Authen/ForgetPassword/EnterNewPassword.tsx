@@ -17,9 +17,9 @@ import {
   NewPasswordFormValues
 } from "./helper";
 import { SYSTEM_PATHS } from "@/src/constants/path";
-import { useDialog } from "@/components/useCustomDialog/useDialog";
 import { PhonePasswordEmoji } from "@/components/common/Emoji";
 import { TEXT_SIZE, FONT_WEIGHT } from "@/src/constants/text";
+import { useDialog } from "@/components/hooks";
 
 const EnterNewPassword = () => {
   const router = useRouter();

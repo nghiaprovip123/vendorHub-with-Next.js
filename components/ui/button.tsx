@@ -2,6 +2,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { Stack, Typography } from "@mui/material"
 import { cva, type VariantProps } from "class-variance-authority"
+import { LoaderCircle } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { FONT_WEIGHT } from "@/src/constants/text"
@@ -41,6 +42,7 @@ function Button({
   label,
   startIcon,
   endIcon,
+  isLoading = false,
   children,
   ...props
 }: React.ComponentProps<"button"> &
@@ -49,6 +51,7 @@ function Button({
     label?: string;
     startIcon?: React.ReactNode,
     endIcon?: React.ReactNode,
+    isLoading?: boolean,
   }) {
   const Comp = asChild ? Slot : "button"
 
@@ -61,13 +64,17 @@ function Button({
       )}
       {...props}
     >
-      <Stack direction='row' alignItems='center' gap={1}>
-        {startIcon && <span className="inline-flex">{startIcon}</span>}
-        <Typography sx={{ fontWeight: FONT_WEIGHT.SEMIBOLD }}>
-          {label || children}
-        </Typography>
-        {endIcon && <span className="inline-flex">{endIcon}</span>}
-      </Stack>
+      {isLoading ? (
+        <LoaderCircle className="animate-spin" />
+      ) : (
+        <Stack direction='row' alignItems='center' gap={1}>
+          {startIcon && <span className="inline-flex">{startIcon}</span>}
+          <Typography sx={{ fontWeight: FONT_WEIGHT.SEMIBOLD }}>
+            {label || children}
+          </Typography>
+          {endIcon && <span className="inline-flex">{endIcon}</span>}
+        </Stack>
+      )}
     </Comp>
   )
 }

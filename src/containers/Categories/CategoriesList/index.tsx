@@ -5,26 +5,24 @@ import { useMemo } from "react";
 
 import { categoriesMock } from "./helpers";
 import { allColumns } from "./allColumns";
-import { CustomDialog } from "@/components/useCustomDialog/CustomDialog";
-import { useCustomDialog } from "@/components/useCustomDialog/useCustomDialog";
 import { Table } from "@/components/common";
 
 const CategoriesList = () => {
-  const dialog = useCustomDialog();
+  // const dialog = useCustomDialog();
     
   const columns = useMemo(() => {
-    return allColumns(dialog);
+    return allColumns(null);
   }, []);
 
-  const handleCreateCategory = () => {
-    dialog.open({
-      title: 'Add New Category',
-      content: <></>,
-      confirmText: "Submit",
-      cancelText: 'Cancel',
-      size: "md",
-    });
-  };
+  // const handleCreateCategory = () => {
+  //   dialog.open({
+  //     title: 'Add New Category',
+  //     content: <></>,
+  //     confirmText: "Submit",
+  //     cancelText: 'Cancel',
+  //     size: "md",
+  //   });
+  // };
     
   return (
     <div className="w-full px-8">
@@ -33,9 +31,9 @@ const CategoriesList = () => {
         data={categoriesMock}
         columns={columns}
         buttonText="Add Category"
-        handleButtonAction={handleCreateCategory}
+        // handleButtonAction={handleCreateCategory}
       />
-      <CustomDialog dialog={dialog} />
+      {/* <CustomDialog dialog={dialog} /> */}
     </div>
   );
 };

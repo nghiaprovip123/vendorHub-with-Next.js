@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 
-import { DialogContext } from "./DialogProvider";
+import { DialogContext } from "../providers";
 
 export const useDialog = () => {
   const ctx = useContext(DialogContext);
