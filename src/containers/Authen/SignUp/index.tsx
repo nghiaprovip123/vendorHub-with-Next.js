@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { Grid, Stack, Typography } from "@mui/material";
@@ -15,20 +16,23 @@ import { Button, Form } from "@/components/ui";
 import { GoogleLogo } from "@/components/common/Logo";
 import { COLOR_CODES } from "@/src/constants/color";
 import { TEXT_SIZE, FONT_WEIGHT } from "@/src/constants/text";
+import { SYSTEM_PATHS } from "@/src/constants/path";
 import { Divider, FormInput, FormCheckbox } from "@/components/common";
 import { CrudKeys, formSchema, initialValues, SignUpFormValues } from "./helpers";
 
+import { useRegister } from "@/src/queries";
+import { RegisterPayload } from "@/app/services";
+
 const SignUpPage = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [checked, setChecked] = useState<boolean>(false);
 
-  const handleLoginWithGoogle = () => {
-    startTransition(() => {
-      router.push('/api/auth/google');
-    });
-  };
-
+  const { register, isLoading } = useRegister({
+    onSuccess() {
+      router.replace(`${SYSTEM_PATHS.authentication}?type=login`);
+    },
+  });
+  
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialValues,
@@ -39,7 +43,13 @@ const SignUpPage = () => {
   } = form;
 
   const handleValidSubmit = (formValues: SignUpFormValues) => {
-    console.log(formValues);
+    const payload: RegisterPayload = {
+      email: formValues.email,
+      password: formValues.password,
+      userName: formValues.userName,
+    };
+
+    register(payload);
   };
   
   return (
@@ -68,8 +78,6 @@ const SignUpPage = () => {
           marginTop: '20px',
           marginBottom: '28px'
         }}
-        onClick={handleLoginWithGoogle}
-        disabled={isPending}
       />
 
       <Divider text="OR" />
@@ -145,7 +153,8 @@ const SignUpPage = () => {
               style={{
                 minWidth: '300px',
               }}
-              disabled={!checked}
+              disabled={!checked || isLoading}
+              isLoading={isLoading}
             />
           </Stack>
         </form>

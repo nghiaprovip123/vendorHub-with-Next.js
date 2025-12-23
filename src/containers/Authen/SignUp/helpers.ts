@@ -5,7 +5,7 @@ import z from "zod";
 export enum CrudKeys {
   _EMAIL = 'email',
   _PASSWORD = 'password',
-  _USERNAME = 'username',
+  _USERNAME = 'userName',
   _CONFIRM_PASSWORD = 'confirmPassword',
 };
 
@@ -29,13 +29,13 @@ export const formSchema = z
       .min(1, "Email is required"),
     [CrudKeys._PASSWORD]: z
       .string()
-      .min(6, "Password must be at least 6 characters"),
+      .min(8, "Password must be at least 8 characters"),
     [CrudKeys._USERNAME]: z
       .string()
       .min(1, "Username is required"),
     [CrudKeys._CONFIRM_PASSWORD]: z
       .string()
-      .min(6, "Confirm Password must be at least 6 characters"),
+      .min(8, "Confirm Password must be at least 8 characters"),
   })
   .refine(
     (data) => data[CrudKeys._PASSWORD] === data[CrudKeys._CONFIRM_PASSWORD],

@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -38,6 +39,10 @@ const X = () => {
       default: return <></>;
     };
   };
+
+  useEffect(() => {
+    setCurrentTab(typeFromUrl ?? tabs[0].value);
+  }, [typeFromUrl])
 
   return (
     <Stack className="authen-page" gap={2}>
