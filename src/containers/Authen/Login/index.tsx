@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { Stack, Typography, Grid } from "@mui/material";
@@ -18,6 +19,7 @@ import { GoogleLogo } from "@/components/common/Logo";
 import { COLOR_CODES } from "@/src/constants/color";
 import { Divider, FormInput } from "@/components/common";
 import { SYSTEM_PATHS } from "@/src/constants/path";
+import { Toastify } from "@/lib";
 import { CrudKeys, formSchema, initialValues, LoginFormValues } from "./helpers";
 
 import { useLogin } from "@/src/queries";
@@ -28,6 +30,7 @@ const LoginPage = () => {
 
   const { login, isLoading } = useLogin({
     onSuccess(data) {
+      Toastify.success("Login Successfully!");
       cookies.set('accessToken', data.accessToken, { 
         path: '/' ,
         sameSite: 'strict',
@@ -35,13 +38,10 @@ const LoginPage = () => {
       });
       router.push('/category-list');
     },
+    onError() {
+      Toastify.error("Login Failed! Please try again.");
+    },
   });
-
-  // const handleLoginWithGoogle = () => {
-  //   startTransition(() => {
-  //     router.push('/api/auth/google');
-  //   });
-  // };
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),

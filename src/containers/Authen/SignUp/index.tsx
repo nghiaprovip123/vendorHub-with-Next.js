@@ -25,6 +25,7 @@ import { SYSTEM_PATHS } from "@/src/constants/path";
 import { Divider, FormInput, FormCheckbox } from "@/components/common";
 import { CrudKeys, formSchema, initialValues, SignUpFormValues } from "./helpers";
 import { useDialog } from "@/components/hooks";
+import { Toastify } from "@/lib/toast";
 
 import { useRegister } from "@/src/queries";
 import { RegisterPayload } from "@/app/services";
@@ -37,6 +38,9 @@ const SignUpPage = () => {
   const { register, isLoading } = useRegister({
     onSuccess() {
       handleOnSuccess();
+    },
+    onError() {
+      Toastify.error("Sign-up Failed! Please try again.");
     },
   });
   

@@ -1,6 +1,10 @@
 import { DM_Sans } from "next/font/google";
 
-import { DialogProvider, QueryProvider } from "@/components/providers";
+import { 
+  DialogProvider, 
+  QueryProvider,
+  ToastProvider,
+} from "@/components/providers";
 
 import '@/src/constants/styles/globals.css';
 
@@ -21,6 +25,7 @@ const RootLayout = ({ children }: Props) => {
         <QueryProvider>
           <DialogProvider>
             {children}
+            <ToastProvider />
           </DialogProvider>
         </QueryProvider>
       </body>
