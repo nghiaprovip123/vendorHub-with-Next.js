@@ -102,7 +102,7 @@ const EnterOTP = ({ onSuccess }: { onSuccess: () => void }) => {
             width: '300px',
             backgroundColor: COLOR_CODES.SECONDARY_BG,
           }}
-          onClick={() => router.push(`/${SYSTEM_PATHS.forgetPassword}?step=email`)}
+          onClick={() => router.push(`${SYSTEM_PATHS.forgetPassword}?step=email`)}
         />
       </Stack>
     </Stack>

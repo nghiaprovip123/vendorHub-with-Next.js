@@ -72,7 +72,7 @@ const EnterResetEmail = ({ onSuccess }: { onSuccess: () => void }) => {
                 width: '300px',
                 backgroundColor: COLOR_CODES.SECONDARY_BG,
               }}
-              onClick={() => router.push(`/${SYSTEM_PATHS.authentication}?type=login`)}
+              onClick={() => router.push(`${SYSTEM_PATHS.authentication}?type=login`)}
             />
           </Stack>
         </form>

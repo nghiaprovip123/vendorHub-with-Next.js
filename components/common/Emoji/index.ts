@@ -6,3 +6,4 @@ export * from './StarDecor';
 export * from './MoneyBag';
 export * from './StarBling';
 export * from './PhonePassword';
+export * from './PeopleGroup';

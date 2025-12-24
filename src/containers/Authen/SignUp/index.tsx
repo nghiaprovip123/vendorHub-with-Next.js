@@ -3,7 +3,7 @@
 
 import { Grid, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { CiMail } from "react-icons/ci";
 import { IoKeyOutline, IoKeySharp } from "react-icons/io5";
 import { LuArrowRightFromLine } from "react-icons/lu";
@@ -11,7 +11,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HiOutlineUser } from "react-icons/hi2";
 
-import { StarBlingEmoji, RocketEmoji, MoneyBagEmoji } from "@/components/common/Emoji";
+import { 
+  StarBlingEmoji, 
+  RocketEmoji, 
+  MoneyBagEmoji,
+  PeopleGroupEmoji
+} from "@/components/common/Emoji";
 import { Button, Form } from "@/components/ui";
 import { GoogleLogo } from "@/components/common/Logo";
 import { COLOR_CODES } from "@/src/constants/color";
@@ -19,17 +24,19 @@ import { TEXT_SIZE, FONT_WEIGHT } from "@/src/constants/text";
 import { SYSTEM_PATHS } from "@/src/constants/path";
 import { Divider, FormInput, FormCheckbox } from "@/components/common";
 import { CrudKeys, formSchema, initialValues, SignUpFormValues } from "./helpers";
+import { useDialog } from "@/components/hooks";
 
 import { useRegister } from "@/src/queries";
 import { RegisterPayload } from "@/app/services";
 
 const SignUpPage = () => {
   const router = useRouter();
+  const { openDialog, closeDialog } = useDialog();
   const [checked, setChecked] = useState<boolean>(false);
 
   const { register, isLoading } = useRegister({
     onSuccess() {
-      router.replace(`${SYSTEM_PATHS.authentication}?type=login`);
+      handleOnSuccess();
     },
   });
   
@@ -51,7 +58,49 @@ const SignUpPage = () => {
 
     register(payload);
   };
-  
+
+  const handleOnSuccess = () => {
+    openDialog({
+      type: 'alert',
+      size: 'sm',
+      content: (
+        <Stack px={3} py={1} gap={2}>
+          <Stack direction='column' alignItems='center' gap={1} mb={2}>
+            <Typography
+              sx={{
+                fontSize: TEXT_SIZE.HXL,
+                fontWeight: FONT_WEIGHT.BOLD,
+                color: '#584700',
+              }}
+            >
+              Sign-up successfully
+            </Typography>
+            <Typography 
+              textAlign='center'
+              sx={{
+                fontSize: TEXT_SIZE.BASE,
+                fontWeight: FONT_WEIGHT.MEDIUM,
+                marginBottom: '20px',
+              }}
+            >
+              Log back in with your new sign-in inforamtion to get started with {" "}
+              <span style={{ color: '#BC9900BF' }}>vendorHub</span>!
+            </Typography>
+            <PeopleGroupEmoji />
+          </Stack>
+
+          <Button
+            label="Login"
+            onClick={() => {
+              router.push(`${SYSTEM_PATHS.authentication}?type=login`);
+              closeDialog();
+            }}
+          />
+        </Stack>
+      ),
+    });
+  };
+
   return (
     <Stack>
       <Stack direction='row' alignItems='center' gap={2} justifyContent='center'>

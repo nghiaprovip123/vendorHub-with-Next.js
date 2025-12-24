@@ -11,5 +11,8 @@ export const useDialog = () => {
     throw new Error("useDialog must be used inside DialogProvider");
   }
 
-  return ctx;
+  return {
+    openDialog: ctx.open,
+    closeDialog: ctx.close,
+  };
 };

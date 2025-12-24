@@ -23,7 +23,7 @@ import { useDialog } from "@/components/hooks";
 
 const EnterNewPassword = () => {
   const router = useRouter();
-  const dialog = useDialog();
+  const { openDialog, closeDialog } = useDialog();
   
   const form = useForm<NewPasswordFormValues>({
     resolver: zodResolver(formNewPasswordSchema),
@@ -37,7 +37,7 @@ const EnterNewPassword = () => {
   const handleValidSubmit = (formValues: NewPasswordFormValues) => {
     console.log(formValues);
 
-    dialog.open({
+    openDialog({
       type: 'alert',
       size: 'sm',
       content: (
@@ -68,8 +68,8 @@ const EnterNewPassword = () => {
           <Button
             label="Login"
             onClick={() => {
-              router.push(`/${SYSTEM_PATHS.authentication}?type=login`);
-              dialog.close();
+              router.push(`${SYSTEM_PATHS.authentication}?type=login`);
+              closeDialog();
             }}
           />
         </Stack>
@@ -125,7 +125,7 @@ const EnterNewPassword = () => {
                 width: '300px',
                 backgroundColor: COLOR_CODES.SECONDARY_BG,
               }}
-              onClick={() => router.push(`/${SYSTEM_PATHS.forgetPassword}?step=email`)}
+              onClick={() => router.push(`${SYSTEM_PATHS.forgetPassword}?step=email`)}
             />
           </Stack>
         </form>
