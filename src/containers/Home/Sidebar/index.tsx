@@ -38,7 +38,7 @@ const Sidebar = () => {
               backgroundColor: isActive
                 ? "var(--background-normal)"
                 : "transparent",
-              transition: "background-color 0.2s ease",
+              transform: isActive ? "translateX(0)" : "translateX(-4px)",
             }}
             onClick={() => router.push(item.route)}
           >

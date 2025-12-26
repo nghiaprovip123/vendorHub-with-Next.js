@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
+
 import { ChevronDown, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { VscAdd } from "react-icons/vsc";

@@ -1,5 +1,3 @@
-'use client';
-
 import { Stack } from "@mui/material";
 
 import { Header, Sidebar } from "@/src/containers/Home";
