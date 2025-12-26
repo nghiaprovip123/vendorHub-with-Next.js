@@ -28,9 +28,10 @@ const Separator = ({
 
 type Props = {
   text?: string;
+  orientation?: "horizontal" | "vertical";
 };
 
-const Divider = ({ text }: Props) => {
+const Divider = ({ text, orientation = 'horizontal' }: Props) => {
   return (
     text ? (
       <Stack direction='row' alignItems='center' justifyContent='center'>
@@ -48,7 +49,7 @@ const Divider = ({ text }: Props) => {
         <Separator className="flex-1 h-0.5 max-w-40" />
       </Stack>
     ) : (
-      <Separator />
+      <Separator orientation={orientation} />
     )
   );
 };

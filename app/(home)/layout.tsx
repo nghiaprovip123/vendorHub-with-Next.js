@@ -1,4 +1,10 @@
-import '@/src/constants/styles/_root.scss';
+'use client';
+
+import { Stack } from "@mui/material";
+
+import { Header, Sidebar } from "@/src/containers/Home";
+
+import './styles.scss';
 
 type Props = {
  children: React.ReactNode;
@@ -6,12 +12,14 @@ type Props = {
 
 const HomeLayout = ({ children }: Props) => {
   return (
-    <html lang="en">
-      <body>
+    <Stack>
+      <Header />
+      <Stack className="home-body" gap={4}>
+        <Sidebar />
         {children}
-      </body>
-    </html>
+      </Stack>
+    </Stack>
   );
-}
+};
 
 export default HomeLayout;
