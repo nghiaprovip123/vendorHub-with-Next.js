@@ -15,9 +15,9 @@
   }
 
   &.sidebar-container {
-    width: 200px;
     padding: 12px;
     min-height: calc(100vh - 100px);
+    transition: width 0.2s ease;
     background-color: var(--primary-color);
     border-radius: 20px;
     box-shadow: 4px 4px 0px 0px #000000;
@@ -33,5 +33,21 @@
     border-radius: 99px;
     cursor: pointer;
     transition: background-color 0.25s ease, transform 0.25s ease;
+  }
+
+  &.collapse-button {
+    position: absolute;
+    right: -19px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 240px;
+    background-color: #E4DEB0;
+    border: 1px solid #000;
+    border-radius: 0 99px 99px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 }
