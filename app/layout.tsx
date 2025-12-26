@@ -4,6 +4,7 @@ import {
   DialogProvider, 
   QueryProvider,
   ToastProvider,
+  SidebarProvider,
 } from "@/components/providers";
 
 import '@/src/constants/styles/globals.css';
@@ -24,8 +25,10 @@ const RootLayout = ({ children }: Props) => {
       <body>
         <QueryProvider>
           <DialogProvider>
-            {children}
-            <ToastProvider />
+            <SidebarProvider>
+              {children}
+              <ToastProvider />
+            </SidebarProvider>
           </DialogProvider>
         </QueryProvider>
       </body>

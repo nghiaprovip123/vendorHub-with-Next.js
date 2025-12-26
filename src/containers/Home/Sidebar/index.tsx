@@ -4,15 +4,15 @@ import { Stack, Typography } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { RxDashboard } from "react-icons/rx";
 import { BsBoxSeam } from "react-icons/bs";
-import { useState } from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
 import { FONT_WEIGHT } from "@/src/constants/text";
+import { useSidebar } from "@/components/hooks";
 
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const { isCollapsed, toggleSidebar } = useSidebar();
 
   const sidebarList = [
     {
@@ -70,7 +70,7 @@ const Sidebar = () => {
       </Stack>
 
       <Stack
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={toggleSidebar}
         className="collapse-button"
       >
         {isCollapsed ? <FaCaretRight size={20} /> : <FaCaretLeft size={20} />}

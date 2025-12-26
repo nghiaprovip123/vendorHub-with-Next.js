@@ -1,6 +1,16 @@
+import { Stack } from "@mui/material";
+
+import { Breadcrumbs } from "@/components/common";
+
 const X = () => {
+  const breadcrumbItems = [
+    { label: "Product Management", href: "/product" },
+  ];
+
   return (
-    <div>Product Page</div>
+    <Stack>
+      <Breadcrumbs items={breadcrumbItems} />
+    </Stack>
   );
 };
 
