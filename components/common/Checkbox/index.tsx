@@ -40,7 +40,7 @@ type CheckboxFieldProps = {
   error?: string,
 } & React.ComponentPropsWithoutRef<typeof LibCheckbox>
 
-const Checkbox = React.forwardRef<
+export const Checkbox = React.forwardRef<
   React.ComponentRef<typeof LibCheckbox>,
   CheckboxFieldProps
 >(({ label, error, ...props }, ref) => {

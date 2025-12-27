@@ -4,6 +4,7 @@ import {
   DialogProvider, 
   QueryProvider,
   ToastProvider,
+  ThemeProvider,
   SidebarProvider,
 } from "@/components/providers";
 
@@ -23,14 +24,16 @@ const RootLayout = ({ children }: Props) => {
   return (
     <html lang="en" className={dmSans.variable}>
       <body>
-        <QueryProvider>
-          <DialogProvider>
-            <SidebarProvider>
-              {children}
-              <ToastProvider />
-            </SidebarProvider>
-          </DialogProvider>
-        </QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            <DialogProvider>
+              {/* <SidebarProvider> */}
+                {children}
+                <ToastProvider />
+              {/* </SidebarProvider> */}
+            </DialogProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

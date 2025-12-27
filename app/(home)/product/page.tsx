@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
 
 import { Breadcrumbs } from "@/components/common";
+import { ProductList } from "@/src/containers/ProductManagement";
 
 const X = () => {
   const breadcrumbItems = [
@@ -8,8 +9,9 @@ const X = () => {
   ];
 
   return (
-    <Stack>
+    <Stack gap={2}>
       <Breadcrumbs items={breadcrumbItems} />
+      <ProductList />
     </Stack>
   );
 };

@@ -46,14 +46,14 @@ const LibInput = ({
 
 // CUSTOM INPUT //
 type InputProps = React.ComponentProps<"input"> & {
-  label: string;
+  label?: string;
   startIcon?: React.ReactNode;
   error?: string; 
   includeForgetPass?: boolean;
   handleForgetPassword?: () => void;
 };
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       label,
@@ -70,7 +70,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <Stack direction='column' gap={1}>
+      <Stack direction='column' gap={includeForgetPass ? 1 : 0}>
         <Stack direction='row' justifyContent='space-between'>
           <LibLabel htmlFor={name} className="font-bold">
             {label}
