@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/incompatible-library */
 'use client';
 
@@ -5,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { FiPlusCircle } from "react-icons/fi";
 import { BiFilterAlt } from "react-icons/bi";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { 
   ColumnDef, 
   ColumnFiltersState, 
@@ -19,115 +21,31 @@ import {
 import { IoIosSearch } from "react-icons/io";
 import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui";
 import { FONT_WEIGHT, TEXT_SIZE } from "@/src/constants/text";
-import { cn } from "@/lib";
 import { Input } from "../Input";
-
-const UITable = ({ className, ...props }: React.ComponentProps<"table">) => {
-  return (
-    <div
-      data-slot="table-container"
-      className="relative w-full overflow-x-auto"
-    >
-      <table
-        data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
-        {...props}
-      />
-    </div>
-  )
-}
-
-const TableHeader = ({ className, ...props }: React.ComponentProps<"thead">) => {
-  return (
-    <thead
-      data-slot="table-header"
-      className={cn("rounded bg-[#E2E0D0]", className)}
-      {...props}
-    />
-  )
-}
-
-const TableBody = ({ className, ...props }: React.ComponentProps<"tbody">) => {
-  return (
-    <tbody
-      data-slot="table-body"
-      className={cn("[&_tr:last-child]:border-0", className)}
-      {...props}
-    />
-  )
-}
-
-const TableFooter = ({ className, ...props }: React.ComponentProps<"tfoot">) => {
-  return (
-    <tfoot
-      data-slot="table-footer"
-      className={cn(
-        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-const TableRow = ({ className, ...props }: React.ComponentProps<"tr">) => {
-  return (
-    <tr
-      data-slot="table-row"
-      className={cn(
-        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-const TableHead = ({ className, ...props }: React.ComponentProps<"th">) => {
-  return (
-    <th
-      data-slot="table-head"
-      className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-const TableCell = ({ className, ...props }: React.ComponentProps<"td">) => {
-  return (
-    <td
-      data-slot="table-cell"
-      className={cn(
-        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-const TableCaption = ({
-  className,
-  ...props
-}: React.ComponentProps<"caption">) => {
-  return (
-    <caption
-      data-slot="table-caption"
-      className={cn("text-muted-foreground mt-4 text-sm", className)}
-      {...props}
-    />
-  )
-}
+import { 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow, 
+  UITable,
+} from "./TableComponents";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+} from "./PaginationComponents";
 
 // CUSTOME TABLE
 interface DataTableProps<TData, TValue> {
   title?: string,
+  totalRecord: number,
+  take?: number,
   data: TData[],
   columns: ColumnDef<TData, TValue>[],
   isLoading?: boolean;
@@ -137,14 +55,28 @@ interface DataTableProps<TData, TValue> {
 const Table = <TData, TValue>({
   title,
   data,
+  totalRecord,
+  take = 10,
   columns,
   isLoading,
   handleButtonAction
 }: DataTableProps<TData, TValue>) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+
+  const page = Number(searchParams.get("page") ?? 1);
+  const totalPage = Math.ceil(totalRecord / take);
+
+  const onChange = (p: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(p));
+    router.push(`?${params.toString()}`);
+  };
 
   const table = useReactTable({
     data,
@@ -155,6 +87,8 @@ const Table = <TData, TValue>({
       columnVisibility,
       rowSelection,
     },
+    manualPagination: true,
+    pageCount: totalPage,
     
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -250,7 +184,7 @@ const Table = <TData, TValue>({
           border: '1px solid #000',
           padding: '12px 20px',
           backgroundColor: '#F7F6EC',
-          minHeight: '574px',
+          maxHeight: '574px',
         }}
         gap={2}
       >
@@ -268,9 +202,10 @@ const Table = <TData, TValue>({
             endIcon={<FiPlusCircle style={{ width: '20px', height: '20px' }} />}
           />
         </Stack>
-        <UITable style={{ height: '100%' }}>
+
+        <UITable>
           <TableHeader 
-            className="font-semibold" 
+            className="font-semibold sticky top-0 z-10" 
             style={{ 
               backgroundColor: '#E2E0D0',
             }}
@@ -302,28 +237,48 @@ const Table = <TData, TValue>({
           </TableBody>
         </UITable>
 
-        {/* <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="space-x-2">
-            <Button
-              variant="noShadow"
-              size="sm"
-              label="Previous"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            />
-            <Button
-              variant="noShadow"
-              size="sm"
-              label="Next"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            />
-          </div>
-        </div> */}
+      </Stack>
+      
+      <Stack ml='auto'>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <Button 
+                label="Previous"
+                variant='noShadow'
+                startIcon={<FaChevronLeft style={{ width: '12px', height: '12px' }} />}
+                onClick={() => onChange(page - 1)}
+                style={{ width: '100px' }}
+                disabled={page === 1}
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPage }).map((_, i) => {
+              const p = i + 1;
+              return (
+                <PaginationItem key={p}>
+                  <PaginationLink
+                    isActive={p === page}
+                    onClick={() => onChange(p)}
+                  >
+                    {p}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+
+            <PaginationItem>
+              <Button 
+                label="Next"
+                variant='noShadow'
+                startIcon={<FaChevronRight style={{ width: '12px', height: '12px' }} />}
+                onClick={() => onChange(page + 1)}
+                style={{ width: '100px' }}
+                disabled={page === totalPage}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </Stack>
     </Stack>
   );  

@@ -30,10 +30,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <Stack style={{
-      display: 'flex',
-      position: 'relative',
-    }}>
+    <Stack>
       <Stack 
         className="sidebar-container"
         style={{
@@ -69,13 +66,13 @@ const Sidebar = () => {
             </Stack>
           );
         })}
-      </Stack>
 
-      <Stack
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className="collapse-button"
-      >
-        {isCollapsed ? <FaCaretRight size={20} /> : <FaCaretLeft size={20} />}
+        <Stack
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="collapse-button"
+        >
+          {isCollapsed ? <FaCaretRight size={20} /> : <FaCaretLeft size={20} />}
+        </Stack>
       </Stack>
     </Stack>
   );

@@ -17,6 +17,7 @@ const ProductList = () => {
       <Table
         title="Product Management" 
         data={mock}
+        totalRecord={mock.length}
         columns={columns}
       />
     </Stack>
