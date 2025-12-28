@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/incompatible-library */
 'use client';
 
 import { Loader2 } from "lucide-react";
@@ -172,7 +172,7 @@ const Table = <TData, TValue>({
   const renderRows = table.getRowModel().rows.map((row) => (
     <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
       {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id} style={{ padding: '0px 16px' }}>
+        <TableCell key={cell.id} style={{ padding: '12px 16px' }}>
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </TableCell>
       ))}

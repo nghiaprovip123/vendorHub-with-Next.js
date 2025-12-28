@@ -6,3 +6,4 @@ export * from './Input';
 export * from './Checkbox';
 export * from './OTPInput';
 export * from './Breadcumb';
+export * from './MoreActions';

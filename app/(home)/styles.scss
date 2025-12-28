@@ -5,13 +5,17 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    position: fixed;
+    width: 100%;
     align-items: center;
+    background-color: var(--primary-background-color);
   }
 
   &.home-body {
     display: flex;
     flex-direction: row;
     margin: 20px 16px;
+    margin-top: 76px;
   }
 
   &.sidebar-container {

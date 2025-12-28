@@ -1,26 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use-client'
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Stack, Typography } from "@mui/material";
+import { VscEye } from "react-icons/vsc";
 
-import { Category } from "./types";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import CategoriesDetail from "../CategoriesDetail";
-import { 
-  Button,
-  DropdownMenu, 
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  ImageCard,
-} from "@/components/ui";
-import { Checkbox } from "@radix-ui/react-checkbox";
+import { useDialog } from "@/components/hooks";
+import { MoreActions } from "@/components/common";
 
-export const allColumns = (
-  dialog: any,
-): ColumnDef<any>[] => [
+export const allColumns = (): ColumnDef<any>[] => [
   // {
   //   id: "select",
   //   header: ({ table }) => (
@@ -43,33 +32,90 @@ export const allColumns = (
   {
     accessorKey: "name",
     header: "Product Name",
-    
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <Stack gap={0.5}>
+          <Typography fontWeight={600}>{data.name}</Typography>
+          <Typography style={{
+            backgroundColor: 'var(--primary-color)',
+            fontSize: '12px',
+            fontWeight: 500,
+            width: 'fit-content',
+            padding: '4px 8px',
+            borderRadius: '99px'
+          }}>{data.sku}</Typography>
+        </Stack>
+      );
+    },
   },
   {
     accessorKey: "stock",
     header: "Stock",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("stock")}</div>,
+    cell: ({ row }) => <Typography fontWeight={500}>{row.original.stock}</Typography>,
   },
   {
     accessorKey: "category",
     header: "Category",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("category")}</div>,
+    cell: ({ row }) => <Typography fontWeight={500}>{row.original.category}</Typography>,
   },
   {
     accessorKey: "warehouse",
     header: "Warehouse",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("warehouse")}</div>,
+    cell: ({ row }) => {
+      const data = row.original;
+
+      return (
+        <Stack gap={0.5}>
+          {data.warehouse.map((item: any, index: number) => (
+            <Typography 
+              key={index}
+              fontWeight={600}
+              textTransform='uppercase'
+            >
+              {item}
+            </Typography>
+          ))}
+        </Stack>
+      );
+    }
   },
   {
     accessorKey: "variants",
     header: "Variants",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("variants")}</div>,
+    cell: ({ row }) => <Typography fontWeight={500}>{row.original.variants}</Typography>,
   },
   {
     accessorKey: "productAssets",
     header: "Product Assets",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("productAssets")}</div>,
+    cell: ({ row }) => {
+      const data = row.original;
+
+      const { openDialog } = useDialog();
+
+      const handleShowAssets = () => {
+        openDialog({
+          type: 'dialog',
+          title: `Product ${data.sku}'s Assets`,
+          content: <></>,
+          size: 'md',
+        })
+      };
+
+      return (
+        <Stack >
+          <VscEye 
+            onClick={handleShowAssets} 
+            style={{ 
+              width: '24px', 
+              height: '24px',
+              cursor: 'pointer',
+            }} 
+          />
+        </Stack>
+      );
+    },
   },
   {
     header: 'Action',
@@ -77,7 +123,7 @@ export const allColumns = (
       const item = row.original;
       
       return (
-        <></>
+        <MoreActions />
       );
     },
   },

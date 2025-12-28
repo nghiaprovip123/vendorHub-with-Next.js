@@ -1,22 +1,22 @@
 'use client';
 
 import { Stack } from '@mui/material';
+import { useMemo } from 'react';
 
 import { Table } from '@/components/common';
-import { useMemo } from 'react';
 import { allColumns } from './allColumns';
 import { mock } from './helpers';
 
 const ProductList = () => {
   const columns = useMemo(() => {
-    return allColumns(null);
+    return allColumns();
   }, []);
     
   return (
     <Stack>
       <Table
         title="Product Management" 
-        data={[]}
+        data={mock}
         columns={columns}
       />
     </Stack>

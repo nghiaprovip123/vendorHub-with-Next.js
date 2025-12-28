@@ -9,6 +9,12 @@ import {
 const muiTheme = createTheme({
   typography: {
     fontFamily: "var(--font-dm-sans), system-ui, sans-serif",
+    body1: {
+      fontSize: '14px',
+    },
+    body2: {
+      fontSize: '14px',
+    },
   },
 });
 
