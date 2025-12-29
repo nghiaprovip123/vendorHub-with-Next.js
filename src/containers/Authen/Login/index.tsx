@@ -36,7 +36,7 @@ const LoginPage = () => {
         sameSite: 'strict',
         maxAge: 15 * 60,
       });
-      router.push('/category-list');
+      router.push('/dashboard');
     },
     onError() {
       Toastify.error("Login Failed! Please try again.");
