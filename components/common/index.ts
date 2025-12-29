@@ -7,3 +7,5 @@ export * from './Checkbox';
 export * from './OTPInput';
 export * from './Breadcumb';
 export * from './MoreActions';
+export * from './Slider';
+export * from  './Select';

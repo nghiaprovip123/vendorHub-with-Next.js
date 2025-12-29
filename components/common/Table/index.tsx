@@ -40,6 +40,7 @@ import {
   PaginationItem, 
   PaginationLink, 
 } from "./PaginationComponents";
+import { useDialog } from "@/components/hooks";
 
 // CUSTOME TABLE
 interface DataTableProps<TData, TValue> {
@@ -48,8 +49,8 @@ interface DataTableProps<TData, TValue> {
   take?: number,
   data: TData[],
   columns: ColumnDef<TData, TValue>[],
-  isLoading?: boolean;
-  handleButtonAction?: () => void;
+  isLoading?: boolean,
+  filterForm?: React.ReactNode,
 };
 
 const Table = <TData, TValue>({
@@ -59,7 +60,7 @@ const Table = <TData, TValue>({
   take = 10,
   columns,
   isLoading,
-  handleButtonAction
+  filterForm,
 }: DataTableProps<TData, TValue>) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -69,14 +70,10 @@ const Table = <TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
 
+  const { openDialog } = useDialog();
+
   const page = Number(searchParams.get("page") ?? 1);
   const totalPage = Math.ceil(totalRecord / take);
-
-  const onChange = (p: number) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(p));
-    router.push(`?${params.toString()}`);
-  };
 
   const table = useReactTable({
     data,
@@ -147,6 +144,19 @@ const Table = <TData, TValue>({
       </TableCell>
     </TableRow>
   );
+
+  const onPageChange = (p: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(p));
+    router.push(`?${params.toString()}`);
+  };
+
+  const handleOpenFilter = () => {
+    openDialog({
+      type: 'drawer',
+      content: filterForm,
+    });
+  };
   
   return (
     <Stack gap={2}>
@@ -160,7 +170,7 @@ const Table = <TData, TValue>({
           <Button 
             className="w-20 text-sm!" 
             variant='noShadow'
-            onClick={handleButtonAction}
+            onClick={handleOpenFilter}
             label='Filter'
             startIcon={<BiFilterAlt style={{ width: '20px', height: '20px' }} />}
             style={{}}
@@ -184,7 +194,7 @@ const Table = <TData, TValue>({
           border: '1px solid #000',
           padding: '12px 20px',
           backgroundColor: '#F7F6EC',
-          maxHeight: '574px',
+          maxHeight: '518px',
         }}
         gap={2}
       >
@@ -247,7 +257,7 @@ const Table = <TData, TValue>({
                 label="Previous"
                 variant='noShadow'
                 startIcon={<FaChevronLeft style={{ width: '12px', height: '12px' }} />}
-                onClick={() => onChange(page - 1)}
+                onClick={() => onPageChange(page - 1)}
                 style={{ width: '100px' }}
                 disabled={page === 1}
               />
@@ -259,7 +269,7 @@ const Table = <TData, TValue>({
                 <PaginationItem key={p}>
                   <PaginationLink
                     isActive={p === page}
-                    onClick={() => onChange(p)}
+                    onClick={() => onPageChange(p)}
                   >
                     {p}
                   </PaginationLink>
@@ -272,7 +282,7 @@ const Table = <TData, TValue>({
                 label="Next"
                 variant='noShadow'
                 startIcon={<FaChevronRight style={{ width: '12px', height: '12px' }} />}
-                onClick={() => onChange(page + 1)}
+                onClick={() => onPageChange(page + 1)}
                 style={{ width: '100px' }}
                 disabled={page === totalPage}
               />

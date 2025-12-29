@@ -4,8 +4,8 @@ import { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+// import { Label } from "@/components/ui/label"
+// import { Separator } from "@/components/ui/separator"
 
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -107,23 +107,23 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function FieldLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof Label>) {
-  return (
-    <Label
-      data-slot="field-label"
-      className={cn(
-        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
-        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4",
-        "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10",
-        className
-      )}
-      {...props}
-    />
-  )
-}
+// function FieldLabel({
+//   className,
+//   ...props
+// }: React.ComponentProps<typeof Label>) {
+//   return (
+//     <Label
+//       data-slot="field-label"
+//       className={cn(
+//         "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50",
+//         "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>*]:data-[slot=field]:p-4",
+//         "has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10",
+//         className
+//       )}
+//       {...props}
+//     />
+//   )
+// }
 
 function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -170,7 +170,7 @@ function FieldSeparator({
       )}
       {...props}
     >
-      <Separator className="absolute inset-0 top-1/2" />
+      {/* <Separator className="absolute inset-0 top-1/2" /> */}
       {children && (
         <span
           className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
@@ -236,7 +236,7 @@ function FieldError({
 
 export {
   Field,
-  FieldLabel,
+  // FieldLabel,
   FieldDescription,
   FieldError,
   FieldGroup,

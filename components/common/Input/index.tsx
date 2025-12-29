@@ -70,27 +70,29 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     return (
-      <Stack direction='column' gap={includeForgetPass ? 1 : 0}>
-        <Stack direction='row' justifyContent='space-between'>
-          <LibLabel htmlFor={name} className="font-bold">
-            {label}
-            {required ? <span style={{ color: 'red' }}>*</span> : null}
-          </LibLabel>
+      <Stack direction='column' gap={1}>
+        {(label || includeForgetPass) && (
+          <Stack direction='row' justifyContent='space-between'>
+            <LibLabel htmlFor={name} className="font-bold">
+              {label}
+              {required ? <span style={{ color: 'red' }}>*</span> : null}
+            </LibLabel>
 
-          {includeForgetPass && (
-            <p
-              style={{
-                fontSize: TEXT_SIZE.SM,
-                fontWeight: FONT_WEIGHT.MEDIUM,
-                textDecoration: 'underline',
-                cursor: 'pointer',
-              }}
-              onClick={handleForgetPassword}
-            >
-              Forgot your password?
-            </p>
-          )}
-        </Stack>
+            {includeForgetPass && (
+              <p
+                style={{
+                  fontSize: TEXT_SIZE.SM,
+                  fontWeight: FONT_WEIGHT.MEDIUM,
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                onClick={handleForgetPassword}
+              >
+                Forgot your password?
+              </p>
+            )}
+          </Stack>
+        )}
 
         <Stack 
           direction='row' 

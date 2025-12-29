@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { Separator } from "@/components/ui/separator"
+// import { Separator } from "@/components/ui/separator"
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -16,19 +16,19 @@ function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function ItemSeparator({
-  className,
-  ...props
-}: React.ComponentProps<typeof Separator>) {
-  return (
-    <Separator
-      data-slot="item-separator"
-      orientation="horizontal"
-      className={cn("my-0", className)}
-      {...props}
-    />
-  )
-}
+// function ItemSeparator({
+//   className,
+//   ...props
+// }: React.ComponentProps<typeof Separator>) {
+//   return (
+//     <Separator
+//       data-slot="item-separator"
+//       orientation="horizontal"
+//       className={cn("my-0", className)}
+//       {...props}
+//     />
+//   )
+// }
 
 const itemVariants = cva(
   "group/item flex items-center border border-transparent text-sm rounded-md transition-colors [a]:hover:bg-accent/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -185,7 +185,7 @@ export {
   ItemContent,
   ItemActions,
   ItemGroup,
-  ItemSeparator,
+  // ItemSeparator,
   ItemTitle,
   ItemDescription,
   ItemHeader,
